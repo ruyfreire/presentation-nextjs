@@ -12,7 +12,7 @@ export function ModeToggle({ ...props }: ModeToggleProps) {
 
   return (
     <Button
-      variant="outline"
+      variant="secondary"
       size="icon"
       title="Mudar tema"
       onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}

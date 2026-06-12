@@ -1,13 +1,18 @@
 import './globals.css'
 
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Montserrat } from 'next/font/google'
 
 import { ModeToggle } from '@/components/mode-toggle'
 import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
+import ReactQueryProvider from '@/components/react-query-provider'
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  weight: ['300', '400', '500', '600', '700', '800'],
+})
 
 export const metadata: Metadata = {
   title: 'Ruy Freire',
@@ -23,18 +28,20 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className={cn('h-full', 'antialiased', 'font-sans', inter.variable)}
+      className={cn('h-full', 'antialiased', 'font-sans', montserrat.variable)}
     >
-      <body className="min-h-full flex flex-col">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <ModeToggle className="fixed top-4 right-4" />
-          {children}
-        </ThemeProvider>
+      <body className="min-h-full">
+        <ReactQueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <ModeToggle className="fixed top-4 right-4 z-50" />
+            {children}
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   )
