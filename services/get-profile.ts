@@ -1,6 +1,7 @@
+import { useQuery } from '@tanstack/react-query'
+
 import { GetProfileParamsType, GetProfileResponseType } from '@/@types/profile'
 import { api } from '@/lib/axios'
-import { useQuery } from '@tanstack/react-query'
 
 const PROFILE_QUERY_KEY = 'profile'
 
@@ -19,4 +20,4 @@ const useGetProfile = (params: GetProfileParamsType = {}) => {
   })
 }
 
-export { getProfile, useGetProfile, PROFILE_QUERY_KEY }
+export { getProfile, PROFILE_QUERY_KEY, useGetProfile }

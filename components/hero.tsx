@@ -1,5 +1,6 @@
-import { ProfileType } from '@/@types/profile'
 import Image from 'next/image'
+
+import { ProfileType } from '@/@types/profile'
 
 type HeroProps = {
   profile: ProfileType

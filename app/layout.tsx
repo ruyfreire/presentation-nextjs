@@ -4,9 +4,9 @@ import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 
 import { ModeToggle } from '@/components/mode-toggle'
+import ReactQueryProvider from '@/components/react-query-provider'
 import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
-import ReactQueryProvider from '@/components/react-query-provider'
 
 const montserrat = Montserrat({
   subsets: ['latin'],

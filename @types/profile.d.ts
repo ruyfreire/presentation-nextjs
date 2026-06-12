@@ -49,10 +49,10 @@ type GetProfileResponseType = {
 }
 
 export type {
-  ProfileType,
-  GetProfileParamsType,
   ContactType,
-  ExperienceType,
   EducationType,
+  ExperienceType,
+  GetProfileParamsType,
   GetProfileResponseType,
+  ProfileType,
 }
