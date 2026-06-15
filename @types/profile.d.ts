@@ -30,6 +30,7 @@ type ProfileType = {
   id: string
   version: number
   profileId: string
+  imageUrl: string
   name: string
   role: string
   bio: string | null

@@ -1,5 +1,8 @@
 'use client'
 
+import { motion, Variants } from 'motion/react'
+import { useEffect, useState } from 'react'
+
 import { Hero } from '@/components/hero'
 import { Section } from '@/components/section'
 import { useGetProfile } from '@/services/get-profile'
@@ -7,8 +10,9 @@ import { formatDate } from '@/utils/formatters'
 
 export default function Home() {
   const { data: response, isLoading } = useGetProfile()
+  const [delayInitializing, setDelayInitializing] = useState(true)
 
-  const formatRangeDate = ({
+  const formatDateRange = ({
     startDate,
     endDate,
   }: {
@@ -22,8 +26,44 @@ export default function Home() {
     return formatDate(startDate, 'yyyy')
   }
 
-  if (isLoading) {
-    return <div>Carregando...</div>
+  useEffect(() => {
+    setTimeout(() => {
+      setDelayInitializing(false)
+    }, 3000)
+  }, [])
+
+  if (isLoading || delayInitializing) {
+    const dotVariants: Variants = {
+      pulse: {
+        scale: [1, 1.5, 1],
+        transition: {
+          duration: 0.8,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        },
+      },
+    }
+
+    return (
+      <motion.div
+        animate="pulse"
+        transition={{ staggerChildren: -0.2, staggerDirection: -1 }}
+        className="w-screen h-screen flex items-center justify-center fixed z-50 gap-4"
+      >
+        <motion.div
+          className="bg-muted size-8 rounded-full"
+          variants={dotVariants}
+        />
+        <motion.div
+          className="bg-muted size-8 rounded-full"
+          variants={dotVariants}
+        />
+        <motion.div
+          className="bg-muted size-8 rounded-full"
+          variants={dotVariants}
+        />
+      </motion.div>
+    )
   }
 
   if (!response) {
@@ -33,11 +73,11 @@ export default function Home() {
   const profile = response.data
 
   return (
-    <div className="relative w-full max-w-4xl py-14 px-4 flex gap-10 flex-col mx-auto">
+    <div className="relative w-full py-14 flex gap-10 flex-col items-center">
       <Hero profile={profile} />
 
       <Section title="Sobre">
-        <p>{profile.bio}</p>
+        <p className="text-justify">{profile.bio}</p>
       </Section>
 
       <Section title="Experiência profissional">
@@ -45,12 +85,14 @@ export default function Home() {
           {profile.experiences.map((experience) => (
             <Section.Item
               key={experience.id}
-              date={formatRangeDate({
+              date={formatDateRange({
                 startDate: experience.startDate,
                 endDate: experience.endDate,
               })}
-              title={experience.company}
+              title={experience.role}
+              subtitle={experience.company}
               description={experience.description}
+              tags={experience.tags}
             />
           ))}
         </Section.List>
@@ -61,12 +103,15 @@ export default function Home() {
           {profile.education.map((education) => (
             <Section.Item
               key={education.id}
-              date={formatRangeDate({
+              date={formatDateRange({
                 startDate: education.startDate,
                 endDate: education.endDate,
               })}
               title={education.title}
+              subtitle={education.institution}
               description={education.description}
+              tags={education.tags}
+              certificateUrl={education.certificateUrl}
             />
           ))}
         </Section.List>

@@ -30,12 +30,12 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn('h-full', 'antialiased', 'font-sans', montserrat.variable)}
     >
-      <body className="min-h-full">
+      <body className="min-h-full tracking-wide">
         <ReactQueryProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
-            enableSystem
+            defaultTheme="light"
+            enableSystem={false}
             disableTransitionOnChange
           >
             <ModeToggle className="fixed top-4 right-4 z-50" />
