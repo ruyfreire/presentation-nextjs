@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 import { Container } from '@/components/container'
 import { NavigateButton } from '@/components/navigate-button'
 import { Button } from '@/components/ui/button'
@@ -45,12 +47,12 @@ export default function About() {
   return (
     <>
       <Container>
-        <h1 className="text-2xl font-bold underline">Indo além do frontend</h1>
+        <h1 className="text-2xl font-bold">Um pouco mais sobre o projeto...</h1>
 
         <section className="space-y-2">
           <h4 className="text-md font-bold">Frontend</h4>
 
-          <div className="[&_a]:underline">
+          <div>
             <p>
               Esta aplicação foi construída com Next.js e TypeScript, utilizando
               Tailwind CSS e Shadcn UI para estilização e componentes e Lucide
@@ -66,8 +68,8 @@ export default function About() {
           <GithubButton href="https://github.com/ruyfreire/presentation-nextjs" />
         </section>
 
-        <section>
-          <h4>Backend</h4>
+        <section className="space-y-2">
+          <h4 className="text-md font-bold">Backend</h4>
 
           <div>
             <p>
@@ -76,10 +78,12 @@ export default function About() {
               autenticação das rotas. E Jest para testes.
             </p>
           </div>
+
+          <GithubButton href="https://github.com/ruyfreire/presentation-api" />
         </section>
 
         <section>
-          <h4>Banco de dados</h4>
+          <h4 className="text-md font-bold">Banco de dados</h4>
           <p>
             O banco de dados utilizado foi o MongoDB (MongoDB Atlas). Escolhido
             pela flexibilidade ao modificar a estrutura de dados servida para
@@ -88,12 +92,33 @@ export default function About() {
         </section>
 
         <section>
-          <h4>Infraestrutura</h4>
+          <h4 className="text-md font-bold">Infraestrutura</h4>
           <p>
             Os projetos foram hospedados em infraestrutura gratuita, utilizando
             Vercel para o frontend, Railway para o backend e MongoDB Atlas para
             o banco de dados.
           </p>
+        </section>
+
+        <section className="space-y-2">
+          <h4 className="text-md font-bold">Observabilidade</h4>
+          <p>
+            Utilizando o Sentry para monitoramento de erros no frontend e
+            backend.
+          </p>
+
+          <div>
+            <p className="text-sm">Trace de erro ponta a ponta</p>
+
+            <Image
+              src="/trace.png"
+              alt="Trace de erro no Sentry"
+              width={826}
+              height={248}
+              className="object-cover h-auto w-full"
+              loading="lazy"
+            />
+          </div>
         </section>
       </Container>
 

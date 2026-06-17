@@ -9,6 +9,7 @@ export function NotFoundMessage() {
         className="dark:bg-white p-2 rounded-md"
         width={150}
         height={150}
+        loading="eager"
       />
 
       <div className="text-center">

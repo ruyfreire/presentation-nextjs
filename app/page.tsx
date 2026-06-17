@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { Container } from '@/components/container'
 import { Hero } from '@/components/hero'
 import { InitialLoading } from '@/components/initial-loading'
+import { NavigateButton } from '@/components/navigate-button'
 import { NotFoundMessage } from '@/components/not-found-message'
 import { Section } from '@/components/section'
 import { useGetProfile } from '@/services/get-profile'
@@ -102,6 +103,8 @@ export default function Home() {
           <NotFoundMessage />
         )}
       </AnimatePresence>
+
+      <NavigateButton href="/about" />
     </>
   )
 }
