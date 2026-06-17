@@ -106,7 +106,7 @@ export function InitialLoading() {
   return (
     <motion.div
       key="initial-loading"
-      className="w-screen min-h-screen absolute bg-muted top-0 z-50 left-0 flex items-center flex-col py-14 px-4"
+      className="w-full min-h-screen absolute bg-muted top-0 z-50 left-0 flex items-center flex-col py-14 px-4"
       exit={{ opacity: 0 }}
       transition={{ duration: 0.4, ease: 'easeInOut' }}
     >

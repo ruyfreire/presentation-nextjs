@@ -2,6 +2,7 @@ import './globals.css'
 
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
+import Script from 'next/script'
 
 import { ModeToggle } from '@/components/mode-toggle'
 import ReactQueryProvider from '@/components/react-query-provider'
@@ -42,6 +43,11 @@ export default function RootLayout({
             {children}
           </ThemeProvider>
         </ReactQueryProvider>
+
+        <Script
+          src="https://t.contentsquare.net/uxa/b7bcadbeefd8e.js"
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   )
