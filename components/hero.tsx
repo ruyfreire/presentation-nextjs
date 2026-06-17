@@ -18,10 +18,11 @@ export function Hero({ profile }: HeroProps) {
 
   useMotionValueEvent(scrollY, 'change', (current) => {
     const md = window.matchMedia('(max-width: 768px)')
+    const isMobile = md.matches
 
     setAnimating({
-      scrolling: current >= 56,
-      isMobile: md.matches,
+      scrolling: isMobile ? current > 0 : current >= 56,
+      isMobile,
     })
   })
 
@@ -39,7 +40,7 @@ export function Hero({ profile }: HeroProps) {
       }}
       initial={{
         maxWidth: 'var(--container-4xl)',
-        backgroundColor: 'var(--background)',
+        borderColor: 'var(--background)',
       }}
       variants={{
         scrolling: {
@@ -54,10 +55,10 @@ export function Hero({ profile }: HeroProps) {
       animate={animating.scrolling ? 'scrolling' : 'initial'}
       transition={{
         default: {
-          delay: 0,
-          duration: animating.isMobile ? 0 : 0.5,
+          duration: 0.5,
           ease: 'linear',
         },
+        maxWidth: animating.isMobile ? { duration: 0 } : undefined,
       }}
     >
       <motion.div
@@ -72,26 +73,24 @@ export function Hero({ profile }: HeroProps) {
         }
         transition={{
           default: {
-            delay: 0,
             duration: 0.5,
             ease: 'linear',
           },
         }}
       >
         <motion.div
-          initial={{ height: 100 }}
-          style={{ overflow: 'hidden' }}
+          className="overflow-hidden"
+          initial={{ height: 96 }}
           variants={{
             hidden: { height: 0 },
-            visible: { height: 100 },
-            scrolling: { height: 50 },
+            visible: { height: 96 },
           }}
           animate={
             animating.isMobile
               ? animating.scrolling
                 ? 'hidden'
                 : 'visible'
-              : 'visible'
+              : undefined
           }
         >
           <Avatar className="size-24">

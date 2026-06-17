@@ -10,7 +10,7 @@ type SectionProps = React.ComponentProps<'section'> & {
 
 function Section({ children, title, ...props }: SectionProps) {
   return (
-    <section className="space-y-2 max-w-4xl px-4" {...props}>
+    <section className="space-y-2" {...props}>
       <h2 className="text-2xl font-semibold">{title}</h2>
       {children}
     </section>
@@ -66,7 +66,11 @@ function Item({
       </div>
 
       <div className="md:ml-28 ml-0 space-y-2">
-        {description && <p className="text-sm text-justify">{description}</p>}
+        {description && (
+          <p className="text-sm text-justify whitespace-pre-line">
+            {description}
+          </p>
+        )}
 
         {tags && (
           <div className="flex flex-wrap gap-1">
