@@ -33,7 +33,7 @@ export default function Home() {
   useEffect(() => {
     setTimeout(() => {
       setDelayInitializing(false)
-    }, 3000)
+    }, 1500)
   }, [])
 
   const profile = response?.data
