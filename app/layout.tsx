@@ -7,6 +7,7 @@ import Script from 'next/script'
 import { ModeToggle } from '@/components/mode-toggle'
 import ReactQueryProvider from '@/components/react-query-provider'
 import { ThemeProvider } from '@/components/theme-provider'
+import { newRelicScript } from '@/configs/newrelic-script'
 import { cn } from '@/lib/utils'
 
 const montserrat = Montserrat({
@@ -45,8 +46,15 @@ export default function RootLayout({
         </ReactQueryProvider>
 
         <Script
+          id="contentsquare-agent"
           src="https://t.contentsquare.net/uxa/b7bcadbeefd8e.js"
           strategy="beforeInteractive"
+        />
+
+        <Script
+          id="newrelic-agent"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: newRelicScript }}
         />
       </body>
     </html>

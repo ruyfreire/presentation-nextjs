@@ -111,8 +111,6 @@ export function InitialLoading() {
       transition={{ duration: 0.4, ease: 'easeInOut' }}
     >
       <motion.svg
-        width="100%"
-        height="auto"
         className="max-w-4xl max-md:aspect-300/800"
         preserveAspectRatio="xMinYMin slice"
         fill="var(--primary)"

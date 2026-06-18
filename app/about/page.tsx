@@ -1,7 +1,3 @@
-'use client'
-
-import Image from 'next/image'
-
 import { Container } from '@/components/container'
 import { NavigateButton } from '@/components/navigate-button'
 import { Button } from '@/components/ui/button'
@@ -106,19 +102,6 @@ export default function About() {
             Utilizando o Sentry para monitoramento de erros no frontend e
             backend.
           </p>
-
-          <div>
-            <p className="text-sm">Trace de erro ponta a ponta</p>
-
-            <Image
-              src="/trace.png"
-              alt="Trace de erro no Sentry"
-              width={826}
-              height={248}
-              className="object-cover h-auto w-full"
-              loading="lazy"
-            />
-          </div>
         </section>
       </Container>
 
