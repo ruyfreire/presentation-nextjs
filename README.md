@@ -13,6 +13,9 @@ pnpm install
 ```bash
 # Copiar o arquivo de exemplo para o arquivo de ambiente
 cp .env.example .env.local
+
+# Configurar API_TOKEN no arquivo .env.local
+API_TOKEN=Bearer your-api-token
 ```
 
 ## Iniciar o projeto

@@ -45,17 +45,21 @@ export default function RootLayout({
           </ThemeProvider>
         </ReactQueryProvider>
 
-        <Script
-          id="contentsquare-agent"
-          src="https://t.contentsquare.net/uxa/b7bcadbeefd8e.js"
-          strategy="beforeInteractive"
-        />
+        {process.env.NODE_ENV === 'production' && (
+          <>
+            <Script
+              id="contentsquare-agent"
+              src="https://t.contentsquare.net/uxa/b7bcadbeefd8e.js"
+              strategy="beforeInteractive"
+            />
 
-        <Script
-          id="newrelic-agent"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: newRelicScript }}
-        />
+            <Script
+              id="newrelic-agent"
+              strategy="beforeInteractive"
+              dangerouslySetInnerHTML={{ __html: newRelicScript }}
+            />
+          </>
+        )}
       </body>
     </html>
   )

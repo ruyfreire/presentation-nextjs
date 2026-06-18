@@ -1,5 +1,3 @@
-'use client'
-
 import { motion, stagger, SVGMotionProps, Variants } from 'motion/react'
 
 const MotionPath = (props: SVGMotionProps<SVGPathElement>) => {
@@ -19,8 +17,8 @@ const MotionPath = (props: SVGMotionProps<SVGPathElement>) => {
       ],
       strokeLinecap: props.strokeLinecap === 'round' ? 'round' : 'butt',
       transition: {
-        pathLength: { duration: 0.3, ease: 'easeInOut' },
-        strokeLinecap: { delay: 0.3 },
+        pathLength: { duration: 0.2, ease: 'easeInOut' },
+        strokeLinecap: { delay: 0 },
         stroke: {
           repeat: Infinity,
           duration: 3,
@@ -118,7 +116,7 @@ export function InitialLoading() {
         initial="hidden"
         animate="visible"
         transition={{
-          delayChildren: stagger(0.1),
+          delayChildren: stagger(0.05),
         }}
       >
         {/* Imagem */}
