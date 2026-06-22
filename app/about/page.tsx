@@ -1,3 +1,6 @@
+import * as motion from 'motion/react-client'
+import Image from 'next/image'
+
 import { Container } from '@/components/container'
 import { NavigateButton } from '@/components/navigate-button'
 import { Button } from '@/components/ui/button'
@@ -39,70 +42,114 @@ function GithubButton({ href }: { href: string }) {
   )
 }
 
+function Section({
+  title,
+  children,
+}: {
+  title: string
+  children: React.ReactNode
+}) {
+  return (
+    <motion.section
+      className="space-y-2 py-4 rounded-sm border-b"
+      variants={{
+        down: {
+          opacity: 0,
+          y: 100,
+        },
+        up: {
+          opacity: 1,
+          y: 0,
+        },
+      }}
+      transition={{
+        duration: 1,
+      }}
+    >
+      <h4 className="text-md font-bold">{title}</h4>
+      {children}
+    </motion.section>
+  )
+}
+
 export default function About() {
   return (
     <>
       <Container>
         <h1 className="text-2xl font-bold">Um pouco mais sobre o projeto...</h1>
 
-        <section className="space-y-2">
-          <h4 className="text-md font-bold">Frontend</h4>
+        <div className="rounded-4xl dark:bg-primary bg-linear-to-br from-rose-800/50 to-teal-800/50 flex items-center justify-center p-4">
+          <Image
+            src="/ecosystem.png"
+            alt="Desenho do ecossistema do projeto"
+            width={808}
+            height={439}
+            className="w-full h-auto max-w-xl object-cover"
+            loading="lazy"
+          />
+        </div>
 
-          <div>
+        <motion.div
+          initial="down"
+          animate="up"
+          transition={{
+            staggerChildren: 0.5,
+            duration: 2,
+          }}
+          className="flex flex-col gap-10"
+        >
+          <Section title="Frontend">
+            <div>
+              <p>
+                Esta aplicação foi construída com Next.js e TypeScript,
+                utilizando Tailwind CSS e Shadcn UI para estilização e
+                componentes e Lucide React para ícones.
+              </p>
+
+              <p>
+                Fazendo chamadas em uma API REST utilizando o Tanstack Query
+                (React Query) e Axios. Também utilizando o motion para
+                animações.
+              </p>
+            </div>
+
+            <GithubButton href="https://github.com/ruyfreire/presentation-nextjs" />
+          </Section>
+
+          <Section title="Backend">
+            <div>
+              <p>
+                O Backend foi construído com NestJS e TypeScript, utilizando
+                Mongoose para interação com o banco de dados. JWT para
+                autenticação das rotas. E Jest para testes.
+              </p>
+            </div>
+
+            <GithubButton href="https://github.com/ruyfreire/presentation-api" />
+          </Section>
+
+          <Section title="Banco de dados">
             <p>
-              Esta aplicação foi construída com Next.js e TypeScript, utilizando
-              Tailwind CSS e Shadcn UI para estilização e componentes e Lucide
-              React para ícones.
+              O banco de dados utilizado foi o MongoDB (MongoDB Atlas).
+              Escolhido pela flexibilidade ao modificar a estrutura de dados
+              servida para este projeto
             </p>
+          </Section>
 
+          <Section title="Infraestrutura">
             <p>
-              Fazendo chamadas em uma API REST utilizando o Tanstack Query
-              (React Query) e Axios. Também utilizando o motion para animações.
+              Os projetos foram hospedados em infraestrutura gratuita,
+              utilizando Vercel para o frontend, Railway para o backend e
+              MongoDB Atlas para o banco de dados.
             </p>
-          </div>
+          </Section>
 
-          <GithubButton href="https://github.com/ruyfreire/presentation-nextjs" />
-        </section>
-
-        <section className="space-y-2">
-          <h4 className="text-md font-bold">Backend</h4>
-
-          <div>
+          <Section title="Observabilidade">
             <p>
-              O Backend foi construído com NestJS e TypeScript, utilizando
-              Mongoose para interação com o banco de dados. JWT para
-              autenticação das rotas. E Jest para testes.
+              Utilizando New Relic para monitoramento de erros de ponta a ponta.
             </p>
-          </div>
-
-          <GithubButton href="https://github.com/ruyfreire/presentation-api" />
-        </section>
-
-        <section>
-          <h4 className="text-md font-bold">Banco de dados</h4>
-          <p>
-            O banco de dados utilizado foi o MongoDB (MongoDB Atlas). Escolhido
-            pela flexibilidade ao modificar a estrutura de dados servida para
-            este projeto
-          </p>
-        </section>
-
-        <section>
-          <h4 className="text-md font-bold">Infraestrutura</h4>
-          <p>
-            Os projetos foram hospedados em infraestrutura gratuita, utilizando
-            Vercel para o frontend, Railway para o backend e MongoDB Atlas para
-            o banco de dados.
-          </p>
-        </section>
-
-        <section className="space-y-2">
-          <h4 className="text-md font-bold">Observabilidade</h4>
-          <p>
-            Utilizando o Sentry para monitoramento de erros no frontend e
-            backend.
-          </p>
-        </section>
+          </Section>
+        </motion.div>
       </Container>
 
       <NavigateButton href="/" />

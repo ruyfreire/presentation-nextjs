@@ -1,19 +1,32 @@
 'use client'
 
+import { isAxiosError } from 'axios'
 import { AnimatePresence, motion } from 'motion/react'
+import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { Container } from '@/components/container'
 import { Hero } from '@/components/hero'
 import { InitialLoading } from '@/components/initial-loading'
 import { NavigateButton } from '@/components/navigate-button'
-import { NotFoundMessage } from '@/components/not-found-message'
+import { ProfileErrorMessage } from '@/components/profile-error-message'
 import { Section } from '@/components/section'
 import { useGetProfile } from '@/services/get-profile'
 import { formatDate } from '@/utils/formatters'
 
 export default function Home() {
-  const { data: response, isLoading: isLoadingProfile } = useGetProfile()
+  const searchParams = useSearchParams()
+  const profileId = String(searchParams.get('profile') || '')
+    .trim()
+    .toLowerCase()
+  const {
+    data: response,
+    isLoading: isLoadingProfile,
+    isError,
+    failureReason,
+  } = useGetProfile({
+    profileId: profileId || undefined,
+  })
   const [delayInitializing, setDelayInitializing] = useState(!response)
 
   const formatDateRange = ({
@@ -37,7 +50,29 @@ export default function Home() {
   }, [])
 
   const profile = response?.data
+  const isNotFound =
+    isAxiosError(failureReason) && failureReason?.status === 404
   const isLoading = isLoadingProfile || delayInitializing
+
+  if (isError && !isNotFound) {
+    return (
+      <ProfileErrorMessage
+        image="/error.png"
+        title="Ops, Erro ao carregar o perfil!"
+        description="Tente novamente mais tarde."
+      />
+    )
+  }
+
+  if (isNotFound || (!isLoading && !profile)) {
+    return (
+      <ProfileErrorMessage
+        image="/not-found.png"
+        title="Ops, Perfil não encontrado!"
+        description="Não foi possível encontrar o perfil solicitado."
+      />
+    )
+  }
 
   return (
     <>
@@ -99,9 +134,7 @@ export default function Home() {
               </Section>
             </Container>
           </motion.div>
-        ) : (
-          <NotFoundMessage />
-        )}
+        ) : null}
       </AnimatePresence>
 
       <NavigateButton href="/about" />
