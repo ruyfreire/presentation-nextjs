@@ -1,8 +1,10 @@
 import './globals.css'
 
+import { LoaderCircle } from 'lucide-react'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import Script from 'next/script'
+import { Suspense } from 'react'
 
 import { ModeToggle } from '@/components/mode-toggle'
 import ReactQueryProvider from '@/components/react-query-provider'
@@ -41,7 +43,15 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ModeToggle className="fixed top-4 right-4 z-50" />
-            {children}
+            <Suspense
+              fallback={
+                <div className="flex w-full min-h-screen bg-muted flex-col gap-4 items-center justify-center">
+                  <LoaderCircle className="size-40 animate-spin" />
+                </div>
+              }
+            >
+              {children}
+            </Suspense>
           </ThemeProvider>
         </ReactQueryProvider>
 
