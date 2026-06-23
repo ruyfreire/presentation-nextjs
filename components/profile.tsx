@@ -1,7 +1,7 @@
 'use client'
 
 import { isAxiosError } from 'axios'
-import { motion } from 'motion/react'
+import { useEffect, useState } from 'react'
 
 import { Container } from '@/components/container'
 import { Hero } from '@/components/hero'
@@ -13,6 +13,8 @@ import { useGetProfile } from '@/services/get-profile'
 import { formatDate } from '@/utils/formatters'
 
 export function Profile() {
+  const [delayLoading, setDelayLoading] = useState(true)
+
   const {
     data: response,
     isLoading: isLoadingProfile,
@@ -34,10 +36,18 @@ export function Profile() {
     return formatDate(startDate, 'yyyy')
   }
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDelayLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timeout)
+  }, [])
+
   const profile = response?.data
   const isNotFound =
     isAxiosError(failureReason) && failureReason?.status === 404
-  const isLoading = isLoadingProfile
+  const isLoading = isLoadingProfile || delayLoading
 
   if (isError && !isNotFound) {
     return (
@@ -64,13 +74,7 @@ export function Profile() {
       {isLoading ? (
         <InitialLoading />
       ) : !!profile ? (
-        <motion.div
-          className=" flex gap-10 flex-col items-center"
-          key="profile"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, ease: 'easeInOut' }}
-        >
+        <div className=" flex gap-10 flex-col items-center">
           <Hero profile={profile} />
 
           <Container>
@@ -115,8 +119,10 @@ export function Profile() {
               </Section.List>
             </Section>
           </Container>
-        </motion.div>
-      ) : null}
+        </div>
+      ) : (
+        <p>Carregando...</p>
+      )}
 
       <NavigateButton href="/about" />
     </>

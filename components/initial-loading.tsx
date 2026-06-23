@@ -1,6 +1,8 @@
-import * as motion from 'motion/react-client'
+'use client'
 
-const MotionPath = (props: React.ComponentProps<typeof motion.path>) => {
+import { motion, stagger, SVGMotionProps } from 'motion/react'
+
+const MotionPath = (props: SVGMotionProps<SVGPathElement>) => {
   return (
     <motion.path
       fill="none"
@@ -14,25 +16,14 @@ const MotionPath = (props: React.ComponentProps<typeof motion.path>) => {
         visible: {
           opacity: 1,
           pathLength: 1,
-          stroke: [
-            'var(--secondary-foreground)',
-            'var(--muted-foreground)',
-            'var(--secondary-foreground)',
-          ],
           strokeLinecap: props.strokeLinecap === 'round' ? 'round' : 'butt',
           transition: {
             pathLength: { duration: 0.2, ease: 'easeInOut' },
-            strokeLinecap: { delay: 0 },
-            stroke: {
-              repeat: Infinity,
-              duration: 3,
-              when: 'afterChildren',
-              delay: 2,
-            },
           },
         },
       }}
       strokeWidth={15}
+      className="animate-pulse duration-1000"
       {...props}
     />
   )
@@ -100,12 +91,7 @@ function Details({
 
 export function InitialLoading() {
   return (
-    <motion.div
-      key="initial-loading"
-      className="w-full min-h-screen absolute bg-muted top-0 z-50 left-0 flex items-center flex-col py-14 px-4"
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: 'easeInOut' }}
-    >
+    <motion.div className="w-full min-h-screen absolute bg-muted top-0 z-50 left-0 flex items-center flex-col py-14 px-4">
       <motion.svg
         className="max-w-4xl max-md:aspect-300/800"
         preserveAspectRatio="xMinYMin slice"
@@ -114,7 +100,7 @@ export function InitialLoading() {
         initial="hidden"
         animate="visible"
         transition={{
-          staggerChildren: 0.05,
+          delayChildren: stagger(0.05),
         }}
       >
         {/* Imagem */}
@@ -123,9 +109,10 @@ export function InitialLoading() {
           cy={63}
           r={60}
           fill="currentColor"
-          className="animate-pulse duration-1000"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1 },
+          }}
         />
 
         {/* Hero */}
