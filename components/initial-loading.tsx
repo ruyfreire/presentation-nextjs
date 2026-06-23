@@ -1,39 +1,37 @@
-import { motion, stagger, SVGMotionProps, Variants } from 'motion/react'
+import * as motion from 'motion/react-client'
 
-const MotionPath = (props: SVGMotionProps<SVGPathElement>) => {
-  const draw: Variants = {
-    hidden: {
-      opacity: 0,
-      pathLength: 0,
-      strokeLinecap: 'butt',
-    },
-    visible: {
-      opacity: 1,
-      pathLength: 1,
-      stroke: [
-        'var(--secondary-foreground)',
-        'var(--muted-foreground)',
-        'var(--secondary-foreground)',
-      ],
-      strokeLinecap: props.strokeLinecap === 'round' ? 'round' : 'butt',
-      transition: {
-        pathLength: { duration: 0.2, ease: 'easeInOut' },
-        strokeLinecap: { delay: 0 },
-        stroke: {
-          repeat: Infinity,
-          duration: 3,
-          when: 'afterChildren',
-          delay: 2,
-        },
-      },
-    },
-  }
-
+const MotionPath = (props: React.ComponentProps<typeof motion.path>) => {
   return (
     <motion.path
       fill="none"
       stroke="currentColor"
-      variants={draw}
+      variants={{
+        hidden: {
+          opacity: 0,
+          pathLength: 0,
+          strokeLinecap: 'butt',
+        },
+        visible: {
+          opacity: 1,
+          pathLength: 1,
+          stroke: [
+            'var(--secondary-foreground)',
+            'var(--muted-foreground)',
+            'var(--secondary-foreground)',
+          ],
+          strokeLinecap: props.strokeLinecap === 'round' ? 'round' : 'butt',
+          transition: {
+            pathLength: { duration: 0.2, ease: 'easeInOut' },
+            strokeLinecap: { delay: 0 },
+            stroke: {
+              repeat: Infinity,
+              duration: 3,
+              when: 'afterChildren',
+              delay: 2,
+            },
+          },
+        },
+      }}
       strokeWidth={15}
       {...props}
     />
@@ -116,7 +114,7 @@ export function InitialLoading() {
         initial="hidden"
         animate="visible"
         transition={{
-          delayChildren: stagger(0.05),
+          staggerChildren: 0.05,
         }}
       >
         {/* Imagem */}
@@ -126,6 +124,8 @@ export function InitialLoading() {
           r={60}
           fill="currentColor"
           className="animate-pulse duration-1000"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         />
 
         {/* Hero */}
