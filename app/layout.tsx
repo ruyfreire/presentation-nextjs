@@ -3,9 +3,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import Script from 'next/script'
-import { Suspense } from 'react'
 
-import { InitialLoading } from '@/components/initial-loading'
 import { ModeToggle } from '@/components/mode-toggle'
 import ReactQueryProvider from '@/components/react-query-provider'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -32,7 +30,7 @@ export default function RootLayout({
     <html
       lang="pt-BR"
       suppressHydrationWarning
-      className={cn('h-full', 'antialiased', 'font-sans', montserrat.variable)}
+      className={cn('h-full', 'antialiased', 'font-sans', montserrat.className)}
     >
       <body className="min-h-full tracking-wide">
         <ReactQueryProvider>
@@ -43,7 +41,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <ModeToggle className="fixed top-4 right-4 z-50" />
-            <Suspense fallback={<InitialLoading />}>{children}</Suspense>
+            {children}
           </ThemeProvider>
         </ReactQueryProvider>
 
