@@ -65,7 +65,7 @@ function Item({
         </div>
       </div>
 
-      <div className="md:ml-28 ml-0 space-y-2">
+      <div className="md:ml-28 ml-0 space-y-4">
         {description && (
           <p className="text-sm text-justify whitespace-pre-line">
             {description}
@@ -75,7 +75,7 @@ function Item({
         {tags && (
           <div className="flex flex-wrap gap-1">
             {tags.map((tag) => (
-              <Badge key={tag} variant="outline">
+              <Badge key={tag} variant="secondary">
                 {tag}
               </Badge>
             ))}

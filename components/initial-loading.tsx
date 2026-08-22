@@ -2,6 +2,8 @@
 
 import { motion, stagger, SVGMotionProps } from 'motion/react'
 
+import { cn } from '@/lib/utils'
+
 const MotionPath = (props: SVGMotionProps<SVGPathElement>) => {
   return (
     <motion.path
@@ -23,7 +25,9 @@ const MotionPath = (props: SVGMotionProps<SVGPathElement>) => {
         },
       }}
       strokeWidth={15}
-      className="animate-pulse duration-1000"
+      className={cn('animate-pulse duration-[3s]', {
+        'delay-[2s]': props.strokeLinecap === 'round',
+      })}
       {...props}
     />
   )
@@ -109,6 +113,7 @@ export function InitialLoading() {
           cy={63}
           r={60}
           fill="currentColor"
+          className="animate-pulse duration-[3s] delay-[1.8s]"
           variants={{
             hidden: { opacity: 0 },
             visible: { opacity: 1 },
