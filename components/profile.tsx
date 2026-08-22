@@ -1,6 +1,7 @@
 'use client'
 
 import { isAxiosError } from 'axios'
+import { useEffect, useRef, useState } from 'react'
 
 import { Container } from '@/components/container'
 import { Hero } from '@/components/hero'
@@ -11,7 +12,14 @@ import { Section } from '@/components/section'
 import { useGetProfile } from '@/services/get-profile'
 import { formatDate } from '@/utils/formatters'
 
+import { LoadingDialog } from './loading-dialog'
+
+const TIME_LIMIT = 5_000 // 5 seconds in milliseconds
+
 export function Profile() {
+  const startTime = useRef<number | null>(null)
+  const [loadingTime, setLoadingTime] = useState(false)
+
   const {
     data: response,
     isLoading: isLoadingProfile,
@@ -33,10 +41,26 @@ export function Profile() {
     return formatDate(startDate, 'yyyy')
   }
 
+  useEffect(() => {
+    startTime.current = Date.now()
+
+    const interval = setInterval(() => {
+      if (startTime.current) {
+        if (Date.now() - startTime.current > TIME_LIMIT) {
+          setLoadingTime(true)
+          clearInterval(interval)
+        }
+      }
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
+
   const profile = response?.data
   const isNotFound =
     isAxiosError(failureReason) && failureReason?.status === 404
   const isLoading = isLoadingProfile
+  const isLoadingTime = loadingTime && isLoading && !profile
 
   if (isError && !isNotFound) {
     return (
@@ -61,7 +85,10 @@ export function Profile() {
   return (
     <>
       {isLoading ? (
-        <InitialLoading />
+        <>
+          <InitialLoading />
+          {isLoadingTime && <LoadingDialog />}
+        </>
       ) : !!profile ? (
         <div className=" flex gap-10 flex-col items-center">
           <Hero profile={profile} />
