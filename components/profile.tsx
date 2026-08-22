@@ -1,7 +1,6 @@
 'use client'
 
 import { isAxiosError } from 'axios'
-import { useEffect, useState } from 'react'
 
 import { Container } from '@/components/container'
 import { Hero } from '@/components/hero'
@@ -13,8 +12,6 @@ import { useGetProfile } from '@/services/get-profile'
 import { formatDate } from '@/utils/formatters'
 
 export function Profile() {
-  const [delayLoading, setDelayLoading] = useState(true)
-
   const {
     data: response,
     isLoading: isLoadingProfile,
@@ -36,18 +33,10 @@ export function Profile() {
     return formatDate(startDate, 'yyyy')
   }
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setDelayLoading(false)
-    }, 1500)
-
-    return () => clearTimeout(timeout)
-  }, [])
-
   const profile = response?.data
   const isNotFound =
     isAxiosError(failureReason) && failureReason?.status === 404
-  const isLoading = isLoadingProfile || delayLoading
+  const isLoading = isLoadingProfile
 
   if (isError && !isNotFound) {
     return (

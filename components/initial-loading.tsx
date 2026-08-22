@@ -23,7 +23,6 @@ const MotionPath = (props: SVGMotionProps<SVGPathElement>) => {
         },
       }}
       strokeWidth={15}
-      className="animate-pulse duration-1000"
       {...props}
     />
   )
