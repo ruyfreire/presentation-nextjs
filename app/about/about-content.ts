@@ -49,7 +49,7 @@ export const aboutDecisions = {
       paragraphs: [
         'New Relic: o plano gratuito cobre o que este projeto precisa (erros e visibilidade da API).',
         'Contentsquare (Hotjar) entra para comportamento de quem visita — sessão e clique.',
-        'A API tem testes e2e (Jest), inclusive com repositório em memória, sem depender do Mongo. Os dois repositórios passam por lint, formatação, verificação de tipos e CI a cada pull request.',
+        'A API tem testes (Jest), inclusive com repositório em memória, sem depender do Mongo. Os dois repositórios passam por lint, formatação, verificação de tipos e CI a cada pull request.',
       ],
     },
   ],
@@ -90,7 +90,7 @@ export const aboutStack = {
     },
     {
       label: 'Qualidade',
-      items: ['Jest e2e', 'Husky', 'GitHub Actions'],
+      items: ['Jest', 'Husky', 'GitHub Actions'],
     },
     {
       label: 'Operação',
