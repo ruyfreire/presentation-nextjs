@@ -3,9 +3,31 @@ import Image from 'next/image'
 
 import { Container } from '@/components/container'
 import { NavigateButton } from '@/components/navigate-button'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
-function GithubButton({ href }: { href: string }) {
+import { aboutDecisions, aboutIntro, aboutStack } from './about-content'
+
+function Reveal({
+  children,
+  className,
+}: {
+  children: React.ReactNode
+  className?: string
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+function GithubButton({ href, label }: { href: string; label: string }) {
   return (
     <Button asChild variant="outline" size="xs" className="cursor-pointer">
       <a href={href} target="_blank" rel="noopener noreferrer">
@@ -36,39 +58,9 @@ function GithubButton({ href }: { href: string }) {
             strokeWidth="16"
           />
         </svg>
-        GitHub
+        {label}
       </a>
     </Button>
-  )
-}
-
-function Section({
-  title,
-  children,
-}: {
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <motion.section
-      className="space-y-2 py-4 rounded-sm border-b"
-      variants={{
-        down: {
-          opacity: 0,
-          y: 100,
-        },
-        up: {
-          opacity: 1,
-          y: 0,
-        },
-      }}
-      transition={{
-        duration: 1,
-      }}
-    >
-      <h4 className="text-md font-bold">{title}</h4>
-      {children}
-    </motion.section>
   )
 }
 
@@ -76,80 +68,78 @@ export default function About() {
   return (
     <>
       <Container>
-        <h1 className="text-2xl font-bold">Um pouco mais sobre o projeto...</h1>
+        <section className="flex flex-col gap-6">
+          <h1 className="text-2xl font-bold">{aboutIntro.title}</h1>
 
-        <div className="rounded-4xl dark:bg-primary bg-linear-to-br from-rose-800/50 to-teal-800/50 flex items-center justify-center p-4">
-          <Image
-            src="/ecosystem.png"
-            alt="Desenho do ecossistema do projeto"
-            width={808}
-            height={439}
-            className="w-full h-auto max-w-xl object-cover"
-            loading="lazy"
-          />
-        </div>
+          <Reveal className="space-y-4">
+            {aboutIntro.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </Reveal>
 
-        <motion.div
-          initial="down"
-          animate="up"
-          transition={{
-            staggerChildren: 0.5,
-            duration: 2,
-          }}
-          className="flex flex-col gap-10"
-        >
-          <Section title="Frontend">
-            <div>
-              <p>
-                Esta aplicação foi construída com Next.js e TypeScript,
-                utilizando Tailwind CSS e Shadcn UI para estilização e
-                componentes e Lucide React para ícones.
-              </p>
+          <div className="rounded-4xl dark:bg-primary bg-linear-to-br from-rose-800/50 to-teal-800/50 flex items-center justify-center p-4">
+            <Image
+              src="/ecosystem.png"
+              alt="Desenho do ecossistema do projeto"
+              width={808}
+              height={439}
+              className="w-full h-auto max-w-xl object-cover"
+              loading="lazy"
+            />
+          </div>
+        </section>
 
-              <p>
-                Fazendo chamadas em uma API REST utilizando o Tanstack Query
-                (React Query) e Axios. Também utilizando o motion para
-                animações.
-              </p>
+        <section className="flex flex-col gap-6">
+          <h2 className="text-2xl font-semibold">{aboutDecisions.title}</h2>
+
+          <Reveal className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {aboutDecisions.items.map((item) => (
+              <article
+                key={item.title}
+                className="space-y-2 rounded-lg border p-4 transition-transform duration-200 hover:-translate-y-0.5"
+              >
+                <h3 className="font-semibold">{item.title}</h3>
+                {item.paragraphs.map((paragraph) => (
+                  <p key={paragraph} className="text-sm">
+                    {paragraph}
+                  </p>
+                ))}
+              </article>
+            ))}
+          </Reveal>
+        </section>
+
+        <section className="flex flex-col gap-6">
+          <h2 className="text-2xl font-semibold">{aboutStack.title}</h2>
+
+          <Reveal className="flex flex-col gap-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-muted-foreground">GitHub:</span>
+              {aboutStack.githubs.map((repo) => (
+                <GithubButton
+                  key={repo.href}
+                  href={repo.href}
+                  label={repo.label}
+                />
+              ))}
             </div>
 
-            <GithubButton href="https://github.com/ruyfreire/presentation-nextjs" />
-          </Section>
-
-          <Section title="Backend">
-            <div>
-              <p>
-                O Backend foi construído com NestJS e TypeScript, utilizando
-                Mongoose para interação com o banco de dados. JWT para
-                autenticação das rotas. E Jest para testes.
-              </p>
+            <div className="flex flex-col gap-4">
+              {aboutStack.groups.map((group) => (
+                <div key={group.label} className="space-y-2">
+                  <h3 className="text-sm font-medium">{group.label}</h3>
+                  <div className="flex flex-wrap gap-1">
+                    {group.items.map((item) => (
+                      <Badge key={item} variant="secondary">
+                        {item}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-
-            <GithubButton href="https://github.com/ruyfreire/presentation-api" />
-          </Section>
-
-          <Section title="Banco de dados">
-            <p>
-              O banco de dados utilizado foi o MongoDB (MongoDB Atlas).
-              Escolhido pela flexibilidade ao modificar a estrutura de dados
-              servida para este projeto
-            </p>
-          </Section>
-
-          <Section title="Infraestrutura">
-            <p>
-              Os projetos foram hospedados em infraestrutura gratuita,
-              utilizando Vercel para o frontend, Railway para o backend e
-              MongoDB Atlas para o banco de dados.
-            </p>
-          </Section>
-
-          <Section title="Observabilidade">
-            <p>
-              Utilizando New Relic para monitoramento de erros de ponta a ponta.
-            </p>
-          </Section>
-        </motion.div>
+          </Reveal>
+        </section>
       </Container>
 
       <NavigateButton href="/" />
