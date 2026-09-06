@@ -1,4 +1,5 @@
 import * as motion from 'motion/react-client'
+import { Metadata } from 'next'
 import Image from 'next/image'
 
 import { Container } from '@/components/container'
@@ -62,6 +63,12 @@ function GithubButton({ href, label }: { href: string; label: string }) {
       </a>
     </Button>
   )
+}
+
+export const metadata: Metadata = {
+  title: 'Sobre este projeto',
+  description:
+    'Informações sobre a construção do projeto e as tecnologias utilizadas.',
 }
 
 export default function About() {
