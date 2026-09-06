@@ -17,8 +17,15 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: 'Ruy Freire',
-  description: 'Apresentação do perfil profissional',
+  title: {
+    template: '%s | Ruy Freire - Engenheiro de Software',
+    default: 'Ruy Freire - Engenheiro de Software',
+  },
+  description:
+    'Apresentação do perfil profissional de Ruy Freire, engenheiro de software.',
+  verification: {
+    google: 'NHJVfV3TYjUX3YCt4jlOkZ6g53IVtxbHC2CML57Zm5Y',
+  },
 }
 
 export default function RootLayout({
