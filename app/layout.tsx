@@ -9,6 +9,11 @@ import GrowthBookWrapper from '@/components/growthbook-wrapper'
 import { ModeToggle } from '@/components/mode-toggle'
 import ReactQueryProvider from '@/components/react-query-provider'
 import { ThemeProvider } from '@/components/theme-provider'
+import {
+  growthbookApiHost,
+  growthbookClientKey,
+  growthbookEnabled,
+} from '@/configs/growthbook'
 import { newRelicScript } from '@/configs/newrelic-script'
 import { cn } from '@/lib/utils'
 
@@ -30,18 +35,27 @@ export const metadata: Metadata = {
   },
 }
 
+const initGrowthbook = async () => {
+  if (!growthbookEnabled) {
+    return undefined
+  }
+
+  const gb = new GrowthBook({
+    apiHost: growthbookApiHost,
+    clientKey: growthbookClientKey,
+  })
+  await gb.init({ timeout: 1_000 })
+  const payload = gb.getDecryptedPayload()
+  gb.destroy()
+  return payload
+}
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const gb = new GrowthBook({
-    apiHost: process.env.NEXT_PUBLIC_GROWTHBOOK_API_HOST,
-    clientKey: process.env.NEXT_PUBLIC_GROWTHBOOK_CLIENT_KEY,
-  })
-  await gb.init({ timeout: 1_000 })
-  const payload = gb.getDecryptedPayload()
-  gb.destroy()
+  const payload = await initGrowthbook()
 
   return (
     <html
