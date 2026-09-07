@@ -1,9 +1,11 @@
 import './globals.css'
 
+import { GrowthBook } from '@growthbook/growthbook'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import Script from 'next/script'
 
+import GrowthBookWrapper from '@/components/growthbook-wrapper'
 import { ModeToggle } from '@/components/mode-toggle'
 import ReactQueryProvider from '@/components/react-query-provider'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -28,11 +30,19 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const gb = new GrowthBook({
+    apiHost: process.env.NEXT_PUBLIC_GROWTHBOOK_API_HOST,
+    clientKey: process.env.NEXT_PUBLIC_GROWTHBOOK_CLIENT_KEY,
+  })
+  await gb.init({ timeout: 1_000 })
+  const payload = gb.getDecryptedPayload()
+  gb.destroy()
+
   return (
     <html
       lang="pt-BR"
@@ -40,17 +50,19 @@ export default function RootLayout({
       className={cn('h-full', 'antialiased', 'font-sans', montserrat.className)}
     >
       <body className="min-h-full tracking-wide">
-        <ReactQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem={false}
-            disableTransitionOnChange
-          >
-            <ModeToggle className="fixed top-4 right-4 z-50" />
-            {children}
-          </ThemeProvider>
-        </ReactQueryProvider>
+        <GrowthBookWrapper payload={payload}>
+          <ReactQueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem={false}
+              disableTransitionOnChange
+            >
+              <ModeToggle className="fixed top-4 right-4 z-50" />
+              {children}
+            </ThemeProvider>
+          </ReactQueryProvider>
+        </GrowthBookWrapper>
 
         {process.env.NODE_ENV === 'production' && (
           <>
