@@ -19,6 +19,8 @@
     ]
   },
   "dependencies": {
+    "@growthbook/growthbook": "^1.7.0",
+    "@growthbook/growthbook-react": "^1.7.0",
     "@tanstack/react-query": "^5.101.0",
     "axios": "^1.17.0",
     "class-variance-authority": "^0.7.1",

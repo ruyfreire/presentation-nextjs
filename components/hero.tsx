@@ -98,8 +98,10 @@ export function Hero({ profile }: HeroProps) {
           <Avatar className="size-24">
             <AvatarImage
               src={profile.imageUrl}
-              alt="Imagem de perfil"
+              alt="Foto de perfil"
               className="rounded-full"
+              width={96}
+              height={96}
             />
             <AvatarFallback>{profile.name.charAt(0)}</AvatarFallback>
           </Avatar>
