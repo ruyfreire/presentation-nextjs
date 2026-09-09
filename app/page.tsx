@@ -4,10 +4,10 @@ import { isAxiosError } from 'axios'
 import { useEffect, useRef, useState } from 'react'
 
 import { Container } from '@/components/container'
+import { ExperienceTimeline } from '@/components/experience-timeline'
 import { Hero } from '@/components/hero'
 import { InitialLoading } from '@/components/initial-loading'
 import { LoadingDialog } from '@/components/loading-dialog'
-import { NavigateButton } from '@/components/navigate-button'
 import { ProfileErrorMessage } from '@/components/profile-error-message'
 import { Section } from '@/components/section'
 import { useGetProfile } from '@/services/get-profile'
@@ -89,7 +89,7 @@ export default function Home() {
           {isLoadingTime && <LoadingDialog />}
         </>
       ) : !!profile ? (
-        <div className=" flex gap-10 flex-col items-center">
+        <div className="flex gap-10 flex-col items-center [overflow-anchor:none]">
           <Hero profile={profile} />
 
           <Container>
@@ -98,21 +98,7 @@ export default function Home() {
             </Section>
 
             <Section title="Experiência profissional">
-              <Section.List>
-                {profile.experiences.map((experience) => (
-                  <Section.Item
-                    key={experience.id}
-                    date={formatDateRange({
-                      startDate: experience.startDate,
-                      endDate: experience.endDate,
-                    })}
-                    title={experience.role}
-                    subtitle={experience.company}
-                    description={experience.description}
-                    tags={experience.tags}
-                  />
-                ))}
-              </Section.List>
+              <ExperienceTimeline experiences={profile.experiences} />
             </Section>
 
             <Section title="Formação">
@@ -138,8 +124,6 @@ export default function Home() {
       ) : (
         <p>Carregando...</p>
       )}
-
-      <NavigateButton href="/about" />
     </>
   )
 }

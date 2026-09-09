@@ -1,9 +1,9 @@
 import * as motion from 'motion/react-client'
 import { Metadata } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 
 import { Container } from '@/components/container'
-import { NavigateButton } from '@/components/navigate-button'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
@@ -73,83 +73,85 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <>
-      <Container>
-        <section className="flex flex-col gap-6">
-          <h1 className="text-2xl font-bold">{aboutIntro.title}</h1>
+    <Container>
+      <section className="flex flex-col gap-6">
+        <div>
+          <Button asChild variant="outline" size="xs">
+            <Link href="/">Voltar ao currículo</Link>
+          </Button>
+        </div>
 
-          <Reveal className="space-y-4">
-            {aboutIntro.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
+        <h1 className="text-2xl font-bold">{aboutIntro.title}</h1>
+
+        <Reveal className="space-y-4">
+          {aboutIntro.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </Reveal>
+
+        <div className="rounded-4xl dark:bg-primary bg-linear-to-br from-rose-800/50 to-teal-800/50 flex items-center justify-center p-4">
+          <Image
+            src="/ecosystem.png"
+            alt="Desenho do ecossistema do projeto"
+            width={808}
+            height={439}
+            className="w-full h-auto max-w-xl object-cover"
+            loading="lazy"
+          />
+        </div>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <h2 className="text-2xl font-semibold">{aboutDecisions.title}</h2>
+
+        <Reveal className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {aboutDecisions.items.map((item) => (
+            <article
+              key={item.title}
+              className="space-y-2 rounded-lg border p-4 transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              <h3 className="font-semibold">{item.title}</h3>
+              {item.paragraphs.map((paragraph) => (
+                <p key={paragraph} className="text-sm">
+                  {paragraph}
+                </p>
+              ))}
+            </article>
+          ))}
+        </Reveal>
+      </section>
+
+      <section className="flex flex-col gap-6">
+        <h2 className="text-2xl font-semibold">{aboutStack.title}</h2>
+
+        <Reveal className="flex flex-col gap-6">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-sm text-muted-foreground">GitHub:</span>
+            {aboutStack.githubs.map((repo) => (
+              <GithubButton
+                key={repo.href}
+                href={repo.href}
+                label={repo.label}
+              />
             ))}
-          </Reveal>
-
-          <div className="rounded-4xl dark:bg-primary bg-linear-to-br from-rose-800/50 to-teal-800/50 flex items-center justify-center p-4">
-            <Image
-              src="/ecosystem.png"
-              alt="Desenho do ecossistema do projeto"
-              width={808}
-              height={439}
-              className="w-full h-auto max-w-xl object-cover"
-              loading="lazy"
-            />
           </div>
-        </section>
 
-        <section className="flex flex-col gap-6">
-          <h2 className="text-2xl font-semibold">{aboutDecisions.title}</h2>
-
-          <Reveal className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {aboutDecisions.items.map((item) => (
-              <article
-                key={item.title}
-                className="space-y-2 rounded-lg border p-4 transition-transform duration-200 hover:-translate-y-0.5"
-              >
-                <h3 className="font-semibold">{item.title}</h3>
-                {item.paragraphs.map((paragraph) => (
-                  <p key={paragraph} className="text-sm">
-                    {paragraph}
-                  </p>
-                ))}
-              </article>
-            ))}
-          </Reveal>
-        </section>
-
-        <section className="flex flex-col gap-6">
-          <h2 className="text-2xl font-semibold">{aboutStack.title}</h2>
-
-          <Reveal className="flex flex-col gap-6">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-sm text-muted-foreground">GitHub:</span>
-              {aboutStack.githubs.map((repo) => (
-                <GithubButton
-                  key={repo.href}
-                  href={repo.href}
-                  label={repo.label}
-                />
-              ))}
-            </div>
-
-            <div className="flex flex-col gap-4">
-              {aboutStack.groups.map((group) => (
-                <div key={group.label} className="space-y-2">
-                  <h3 className="text-sm font-medium">{group.label}</h3>
-                  <div className="flex flex-wrap gap-1">
-                    {group.items.map((item) => (
-                      <Badge key={item} variant="secondary">
-                        {item}
-                      </Badge>
-                    ))}
-                  </div>
+          <div className="flex flex-col gap-4">
+            {aboutStack.groups.map((group) => (
+              <div key={group.label} className="space-y-2">
+                <h3 className="text-sm font-medium">{group.label}</h3>
+                <div className="flex flex-wrap gap-1">
+                  {group.items.map((item) => (
+                    <Badge key={item} variant="secondary">
+                      {item}
+                    </Badge>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </Reveal>
-        </section>
-      </Container>
-
-      <NavigateButton href="/" />
-    </>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+      </section>
+    </Container>
   )
 }
