@@ -11,7 +11,18 @@ import { Badge } from './ui/badge'
 
 function formatPeriod({ startDate, endDate }: ExperienceType) {
   if (endDate) {
-    return `${formatDate(startDate, 'yyyy')} - ${formatDate(endDate, 'yyyy')}`
+    return (
+      <>
+        <span>{formatDate(startDate, 'yyyy')}</span>
+        <span aria-hidden="true" className="hidden md:inline">
+          -
+        </span>
+        <span aria-hidden="true" className="md:hidden">
+          |
+        </span>
+        <span>{formatDate(endDate, 'yyyy')}</span>
+      </>
+    )
   }
 
   return formatDate(startDate, 'yyyy')
@@ -23,7 +34,7 @@ function TimelineItem({ experience }: { experience: ExperienceType }) {
 
   return (
     <li className="flex gap-3 md:gap-4">
-      <p className="w-20 shrink-0 pt-1 text-xs font-light whitespace-nowrap text-muted-foreground md:w-24 md:pt-0.5 md:text-sm">
+      <p className="w-9 shrink-0 pt-1 text-sm font-light flex flex-col items-center md:items-start md:gap-1 md:flex-row whitespace-nowrap text-muted-foreground md:w-24">
         {formatPeriod(experience)}
       </p>
 
@@ -84,7 +95,7 @@ export function ExperienceTimeline({ experiences }: ExperienceTimelineProps) {
     <div ref={containerRef} className="relative">
       <div
         aria-hidden="true"
-        className="absolute top-3 bottom-2 w-0.5 -translate-x-1/2 bg-muted left-24.5 md:left-29.5"
+        className="absolute top-3 bottom-2 w-0.5 -translate-x-1/2 bg-muted left-13.5 md:left-29.5"
       >
         <motion.div
           className="h-full w-full origin-top bg-foreground"

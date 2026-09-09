@@ -89,7 +89,7 @@ export default function Home() {
           {isLoadingTime && <LoadingDialog />}
         </>
       ) : !!profile ? (
-        <div className=" flex gap-10 flex-col items-center">
+        <div className="flex gap-10 flex-col items-center [overflow-anchor:none]">
           <Hero profile={profile} />
 
           <Container>
