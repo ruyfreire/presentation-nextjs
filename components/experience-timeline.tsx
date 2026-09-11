@@ -116,7 +116,9 @@ function ExpandableTags({ tags, label }: { tags: string[]; label: string }) {
             type="button"
             aria-expanded={expanded}
             aria-label={
-              expanded ? `Ver menos tags de ${label}` : `Ver mais tags de ${label}`
+              expanded
+                ? `Ver menos tags de ${label}`
+                : `Ver mais tags de ${label}`
             }
             onClick={() => setExpanded((current) => !current)}
           >
