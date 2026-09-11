@@ -50,9 +50,9 @@ function CustomBadge({ children, isLoading, isHealthy }: CustomBadgeProps) {
 }
 
 const ApiHealth = () => {
-  const { data: isHealthy, isFetching, isError } = useGetHealth()
+  const { data: isHealthy, isPending, isError } = useGetHealth()
 
-  if (isFetching) {
+  if (isPending) {
     return <CustomBadge isLoading>API Status</CustomBadge>
   }
 

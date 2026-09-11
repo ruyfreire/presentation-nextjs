@@ -9,6 +9,7 @@ export default function NotFound() {
       image="/not-found.png"
       title="Página não encontrada!"
       description="Volte para a página inicial."
+      showAboutLink={false}
       link={
         <Button asChild variant="link" className="my-4">
           <Link href="/">Voltar para a página inicial</Link>

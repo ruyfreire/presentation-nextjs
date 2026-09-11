@@ -1,5 +1,7 @@
+import Link from 'next/link'
 import { VisuallyHidden } from 'radix-ui'
 
+import { Button } from './ui/button'
 import {
   Dialog,
   DialogContent,
@@ -54,6 +56,12 @@ const LoadingDialog = () => {
           </svg>
 
           <p className="text-center text-xl font-bold">Ligando servidores...</p>
+
+          <Button asChild size="xs">
+            <Link href="/about">
+              Enquanto isso, saiba mais sobre este projeto
+            </Link>
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
