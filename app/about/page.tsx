@@ -1,8 +1,10 @@
+import { ExternalLinkIcon } from 'lucide-react'
 import * as motion from 'motion/react-client'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { ApiHealth } from '@/components/api-helath'
 import { Container } from '@/components/container'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -152,6 +154,29 @@ export default function About() {
           </div>
         </Reveal>
       </section>
+
+      <div>
+        <hr className="mb-4" />
+
+        <div className="flex gap-2 justify-end">
+          <Button
+            variant="outline"
+            size="xs"
+            className="rounded-full font-bold flex items-center gap-2"
+            asChild
+          >
+            <Link
+              href="https://presentation-api-gqon.onrender.com/docs"
+              target="_blank"
+            >
+              API Swagger
+              <ExternalLinkIcon className="w-4 h-4" />
+            </Link>
+          </Button>
+
+          <ApiHealth />
+        </div>
+      </div>
     </Container>
   )
 }
