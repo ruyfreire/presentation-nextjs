@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
-  timeout: 120_000, // 2 minutes in milliseconds
+  timeout: 1000 * 60, // 1 minute in milliseconds
 })
 
 export { api }
