@@ -1,7 +1,8 @@
 'use client'
 
+import { MinusIcon, PlusIcon } from 'lucide-react'
 import { motion, useInView, useScroll } from 'motion/react'
-import { useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
 import { ExperienceType } from '@/@types/profile'
 import { cn } from '@/lib/utils'
@@ -26,6 +27,107 @@ function formatPeriod({ startDate, endDate }: ExperienceType) {
   }
 
   return formatDate(startDate, 'yyyy')
+}
+
+function ExpandableDescription({
+  id,
+  label,
+  children,
+}: {
+  id: string
+  label: string
+  children: string
+}) {
+  const textRef = useRef<HTMLParagraphElement>(null)
+  const [expanded, setExpanded] = useState(false)
+  const [overflows, setOverflows] = useState(false)
+
+  useLayoutEffect(() => {
+    const element = textRef.current
+    if (!element) return
+
+    const measure = () => {
+      if (expanded) return
+      setOverflows(element.scrollHeight > element.clientHeight + 1)
+    }
+
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [children, expanded])
+
+  return (
+    <div>
+      <p
+        id={id}
+        ref={textRef}
+        className={cn('text-sm text-justify whitespace-pre-line', {
+          'line-clamp-3 md:line-clamp-none': !expanded,
+        })}
+      >
+        {children}
+      </p>
+
+      {overflows && (
+        <button
+          type="button"
+          className={cn(
+            'h-8 md:hidden',
+            'text-nowrap cursor-pointer text-xs relative w-full translate-y-[-20%]',
+          )}
+          aria-expanded={expanded}
+          aria-controls={id}
+          aria-label={
+            expanded ? `Ver menos sobre ${label}` : `Ver mais sobre ${label}`
+          }
+          onClick={() => setExpanded((current) => !current)}
+        >
+          <span className="font-semibold px-2 bg-background rounded-md text-muted-foreground">
+            {expanded ? 'Ver menos' : 'Ver mais'}
+          </span>
+
+          <span className="absolute w-full h-px top-1/2 -translate-y-1/2 z-[-1] bg-muted-foreground/50 left-0 right-0" />
+        </button>
+      )}
+    </div>
+  )
+}
+
+const MAX_VISIBLE_TAGS = 5
+
+function ExpandableTags({ tags, label }: { tags: string[]; label: string }) {
+  const [expanded, setExpanded] = useState(false)
+  const hasOverflow = tags.length > MAX_VISIBLE_TAGS
+  const visibleTags =
+    expanded || !hasOverflow ? tags : tags.slice(0, MAX_VISIBLE_TAGS)
+
+  return (
+    <div className="flex flex-wrap gap-1">
+      {visibleTags.map((tag) => (
+        <Badge key={tag} variant="secondary">
+          {tag}
+        </Badge>
+      ))}
+
+      {hasOverflow && (
+        <Badge variant="outline" className="cursor-pointer" asChild>
+          <button
+            type="button"
+            aria-expanded={expanded}
+            aria-label={
+              expanded
+                ? `Ver menos tags de ${label}`
+                : `Ver mais tags de ${label}`
+            }
+            onClick={() => setExpanded((current) => !current)}
+          >
+            {expanded ? <MinusIcon /> : <PlusIcon />}
+          </button>
+        </Badge>
+      )}
+    </div>
+  )
 }
 
 function TimelineItem({ experience }: { experience: ExperienceType }) {
@@ -59,19 +161,13 @@ function TimelineItem({ experience }: { experience: ExperienceType }) {
         </div>
 
         {experience.description && (
-          <p className="text-sm whitespace-pre-line md:text-justify">
+          <ExpandableDescription id={experience.id} label={experience.role}>
             {experience.description}
-          </p>
+          </ExpandableDescription>
         )}
 
         {experience.tags && experience.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {experience.tags.map((tag) => (
-              <Badge key={tag} variant="secondary">
-                {tag}
-              </Badge>
-            ))}
-          </div>
+          <ExpandableTags tags={experience.tags} label={experience.role} />
         )}
       </div>
     </li>
