@@ -5,7 +5,7 @@ import { api } from '@/lib/axios'
 const HEALTH_QUERY_KEY = 'health'
 
 const getHealth = async () => {
-  const { status } = await api.get('/health', {
+  const { status } = await api.get('/api-status', {
     headers: {
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       Pragma: 'no-cache',

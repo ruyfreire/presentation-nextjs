@@ -58,9 +58,7 @@ const LoadingDialog = () => {
           <p className="text-center text-xl font-bold">Ligando servidores...</p>
 
           <Button asChild size="xs">
-            <Link href="/about">
-              Enquanto isso, saiba mais sobre este projeto
-            </Link>
+            <Link href="/about">saiba mais sobre este projeto</Link>
           </Button>
         </div>
       </DialogContent>
