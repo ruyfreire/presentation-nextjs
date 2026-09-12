@@ -10,6 +10,7 @@ import { InitialLoading } from '@/components/initial-loading'
 import { LoadingDialog } from '@/components/loading-dialog'
 import { ProfileErrorMessage } from '@/components/profile-error-message'
 import { Section } from '@/components/section'
+import { Badge } from '@/components/ui/badge'
 import { useGetProfile } from '@/services/get-profile'
 import { formatDate } from '@/utils/formatters'
 
@@ -119,6 +120,10 @@ export default function Home() {
                 ))}
               </Section.List>
             </Section>
+
+            <div className="flex justify-end border-t pt-2">
+              <Badge variant="outline">{`Versão: ${profile.version}`}</Badge>
+            </div>
           </Container>
         </div>
       ) : (

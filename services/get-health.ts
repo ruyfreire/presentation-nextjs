@@ -5,14 +5,14 @@ import { api } from '@/lib/axios'
 const HEALTH_QUERY_KEY = 'health'
 
 const getHealth = async () => {
-  const { status } = await api.get('/api-status', {
+  const { data } = await api.get<{ status: boolean }>('/api-status', {
     headers: {
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       Pragma: 'no-cache',
     },
   })
 
-  return String(status).startsWith('2')
+  return data.status === true
 }
 
 const useGetHealth = () => {

@@ -166,7 +166,7 @@ export default function About() {
             asChild
           >
             <Link
-              href="https://presentation-api-gqon.onrender.com/docs"
+              href={`${process.env.NEXT_PUBLIC_API_URL}/docs`}
               target="_blank"
             >
               API Swagger
