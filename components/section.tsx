@@ -2,7 +2,7 @@ import { ExternalLinkIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
-import { Badge } from './ui/badge'
+import { ExpandableTags } from './expandable-tags'
 
 type SectionProps = React.ComponentProps<'section'> & {
   title: string
@@ -72,15 +72,7 @@ function Item({
           </p>
         )}
 
-        {tags && (
-          <div className="flex flex-wrap gap-1">
-            {tags.map((tag) => (
-              <Badge key={tag} variant="secondary">
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        )}
+        {tags && <ExpandableTags tags={tags} label={title} />}
 
         {certificateUrl && (
           <a
