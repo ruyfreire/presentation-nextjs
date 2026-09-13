@@ -32,35 +32,12 @@ function Reveal({
 
 function GithubButton({ href, label }: { href: string; label: string }) {
   return (
-    <Button asChild variant="outline" size="xs" className="cursor-pointer">
+    <Button asChild variant="link" size="xs" className="cursor-pointer p-0">
       <a href={href} target="_blank" rel="noopener noreferrer">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
-          <rect width="256" height="256" fill="none" />
-          <path
-            d="M119.83,56A52,52,0,0,0,76,32a51.92,51.92,0,0,0-3.49,44.7A49.28,49.28,0,0,0,64,104v8a48,48,0,0,0,48,48h48a48,48,0,0,0,48-48v-8a49.28,49.28,0,0,0-8.51-27.3A51.92,51.92,0,0,0,196,32a52,52,0,0,0-43.83,24Z"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="16"
-          />
-          <path
-            d="M104,232V192a32,32,0,0,1,32-32h0a32,32,0,0,1,32,32v40"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="16"
-          />
-          <path
-            d="M104,208H72a32,32,0,0,1-32-32A32,32,0,0,0,8,144"
-            fill="none"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="16"
-          />
+        <svg className="size-6" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10.226 17.284c-2.965-.36-5.054-2.493-5.054-5.256 0-1.123.404-2.336 1.078-3.144-.292-.741-.247-2.314.09-2.965.898-.112 2.111.36 2.83 1.01.853-.269 1.752-.404 2.853-.404 1.1 0 1.999.135 2.807.382.696-.629 1.932-1.1 2.83-.988.315.606.36 2.179.067 2.942.72.854 1.101 2 1.101 3.167 0 2.763-2.089 4.852-5.098 5.234.763.494 1.28 1.572 1.28 2.807v2.336c0 .674.561 1.056 1.235.786 4.066-1.55 7.255-5.615 7.255-10.646C23.5 6.188 18.334 1 11.978 1 5.62 1 .5 6.188.5 12.545c0 4.986 3.167 9.12 7.435 10.669.606.225 1.19-.18 1.19-.786V20.63a2.9 2.9 0 0 1-1.078.224c-1.483 0-2.359-.808-2.987-2.313-.247-.607-.517-.966-1.034-1.033-.27-.023-.359-.135-.359-.27 0-.27.45-.471.898-.471.652 0 1.213.404 1.797 1.235.45.651.921.943 1.483.943.561 0 .92-.202 1.437-.719.382-.381.674-.718.944-.943" />
         </svg>
+
         {label}
       </a>
     </Button>
@@ -91,7 +68,7 @@ export default function About() {
           ))}
         </Reveal>
 
-        <div className="rounded-4xl dark:bg-primary bg-linear-to-br from-rose-800/50 to-teal-800/50 flex items-center justify-center p-4">
+        <div className="rounded-md dark:bg-primary bg-linear-to-br from-rose-800/50 to-teal-800/50 flex items-center justify-center p-4">
           <Image
             src="/ecosystem.png"
             alt="Desenho do ecossistema do projeto"
@@ -110,7 +87,7 @@ export default function About() {
           {aboutDecisions.items.map((item) => (
             <article
               key={item.title}
-              className="space-y-2 rounded-lg border p-4 transition-transform duration-200 hover:-translate-y-0.5"
+              className="space-y-2 rounded-md border p-4 transition-transform duration-200 hover:-translate-y-0.5"
             >
               <h3 className="font-semibold">{item.title}</h3>
               {item.paragraphs.map((paragraph) => (
@@ -127,17 +104,6 @@ export default function About() {
         <h2 className="text-2xl font-semibold">{aboutStack.title}</h2>
 
         <Reveal className="flex flex-col gap-6">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm text-muted-foreground">GitHub:</span>
-            {aboutStack.githubs.map((repo) => (
-              <GithubButton
-                key={repo.href}
-                href={repo.href}
-                label={repo.label}
-              />
-            ))}
-          </div>
-
           <div className="flex flex-col gap-4">
             {aboutStack.groups.map((group) => (
               <div key={group.label} className="space-y-2">
@@ -158,24 +124,36 @@ export default function About() {
       <div>
         <hr className="mb-4" />
 
-        <div className="flex gap-2 justify-end">
-          <Button
-            variant="outline"
-            size="xs"
-            className="rounded-full font-bold flex items-center gap-2"
-            asChild
-          >
-            <Link
-              href={`${process.env.NEXT_PUBLIC_API_URL}/docs`}
-              target="_blank"
-            >
-              API Swagger
-              <ExternalLinkIcon className="w-4 h-4" />
-            </Link>
-          </Button>
+        <footer className="flex gap-8 justify-between md:flex-row flex-col items-center">
+          <div className="flex flex-wrap gap-2 justify-center">
+            {aboutStack.githubs.map((repo) => (
+              <GithubButton
+                key={repo.href}
+                href={repo.href}
+                label={repo.label}
+              />
+            ))}
+          </div>
 
-          <ApiHealth />
-        </div>
+          <div className="flex flex-wrap gap-2 justify-center">
+            <Button
+              variant="outline"
+              size="xs"
+              className="rounded-full font-bold flex items-center gap-2"
+              asChild
+            >
+              <Link
+                href={`${process.env.NEXT_PUBLIC_API_URL}/docs`}
+                target="_blank"
+              >
+                API Swagger
+                <ExternalLinkIcon className="w-4 h-4" />
+              </Link>
+            </Button>
+
+            <ApiHealth />
+          </div>
+        </footer>
       </div>
     </Container>
   )
