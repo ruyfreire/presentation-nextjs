@@ -9,6 +9,7 @@ import GrowthBookWrapper from '@/components/growthbook-wrapper'
 import { ModeToggle } from '@/components/mode-toggle'
 import ReactQueryProvider from '@/components/react-query-provider'
 import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
 import {
   growthbookApiHost,
   growthbookClientKey,
@@ -63,7 +64,7 @@ export default async function RootLayout({
       suppressHydrationWarning
       className={cn('h-full', 'antialiased', 'font-sans', montserrat.className)}
     >
-      <body className="min-h-full tracking-wide">
+      <body className="min-h-svh tracking-wide">
         <GrowthBookWrapper payload={payload}>
           <ReactQueryProvider>
             <ThemeProvider
@@ -74,6 +75,7 @@ export default async function RootLayout({
             >
               <ModeToggle className="fixed top-4 right-4 z-50" />
               {children}
+              <Toaster position="top-center" />
             </ThemeProvider>
           </ReactQueryProvider>
         </GrowthBookWrapper>
