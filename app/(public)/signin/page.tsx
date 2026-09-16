@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { isAxiosError } from 'axios'
 import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -31,6 +32,7 @@ const signInSchema = z.object({
 type SignInFormValues = z.infer<typeof signInSchema>
 
 export default function SignInPage() {
+  const router = useRouter()
   const { mutateAsync, isPending } = usePostSignIn()
 
   const form = useForm<SignInFormValues>({
@@ -45,7 +47,7 @@ export default function SignInPage() {
     try {
       const data = await mutateAsync(values)
       setSessionToken(CSRF_TOKEN_KEY, data.data.csrfToken)
-      // TODO: redirecionar após o login
+      router.push('/admin')
     } catch (error) {
       if (
         isAxiosError(error) &&

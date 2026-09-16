@@ -2,11 +2,12 @@
 
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { ComponentProps } from 'react'
 
-import { Button, type ButtonProps } from '@/components/ui/button'
+import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
-type ModeToggleProps = ButtonProps
+type ModeToggleProps = ComponentProps<typeof Button>
 
 export function ModeToggle({ ...props }: ModeToggleProps) {
   const { setTheme } = useTheme()
