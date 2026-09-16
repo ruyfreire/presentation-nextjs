@@ -6,7 +6,6 @@ import { Montserrat } from 'next/font/google'
 import Script from 'next/script'
 
 import GrowthBookWrapper from '@/components/growthbook-wrapper'
-import { ModeToggle } from '@/components/mode-toggle'
 import ReactQueryProvider from '@/components/react-query-provider'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
@@ -73,7 +72,6 @@ export default async function RootLayout({
               enableSystem={false}
               disableTransitionOnChange
             >
-              <ModeToggle className="fixed top-4 right-4 z-50" />
               {children}
               <Toaster position="top-center" />
             </ThemeProvider>

@@ -49,8 +49,11 @@ type GetProfileResponseType = {
   data: ProfileType
 }
 
+type CreateProfileType = Omit<ProfileType, 'id' | 'version'>
+
 export type {
   ContactType,
+  CreateProfileType,
   EducationType,
   ExperienceType,
   GetProfileParamsType,
