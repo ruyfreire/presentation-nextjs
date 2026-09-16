@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 
 import { GetMeResponseType } from '@/@types/me'
 import { api } from '@/lib/axios'
@@ -14,7 +15,16 @@ const useGetMe = () => {
   return useQuery({
     queryKey: [ME_QUERY_KEY],
     queryFn: getMe,
-    retry: 1,
+    retry: (failureCount: number, error: unknown) => {
+      if (
+        isAxiosError(error) &&
+        [401, 403, 429].includes(error.response?.status ?? 0)
+      ) {
+        return false
+      }
+
+      return failureCount < 1
+    },
   })
 }
 
