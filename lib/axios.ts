@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { toast } from 'sonner'
 
 import { CSRF_TOKEN_KEY } from '@/app/constants/tokens'
 import { getSessionToken, removeSessionToken } from '@/utils/session'
@@ -26,6 +27,13 @@ api.interceptors.response.use(
         window.location.href = '/signin'
       }
     }
+
+    if (error.response?.status === 429) {
+      toast.error(
+        'Você atingiu o limite de requisições. Tente novamente mais tarde.',
+      )
+    }
+
     return Promise.reject(error)
   },
 )

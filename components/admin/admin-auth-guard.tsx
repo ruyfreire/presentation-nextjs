@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 import { CSRF_TOKEN_KEY } from '@/app/constants/tokens'
 import { useGetMe } from '@/services/get-me'
@@ -12,11 +13,18 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter()
   const { data, isLoading, isError } = useGetMe()
 
+  useEffect(() => {
+    if (!data && !isLoading) {
+      removeSessionToken(CSRF_TOKEN_KEY)
+      router.replace('/signin')
+    }
+  }, [data, isLoading, router])
+
   if (isLoading) {
     return (
-      <div className="flex h-svh p-2 gap-4">
-        <Skeleton className="h-full w-2/12" />
-        <div className="flex flex-col h-full w-10/12 gap-4">
+      <div className="flex h-svh p-1 gap-4">
+        <Skeleton className="h-full hidden md:block max-w-4/12 w-[256px]" />
+        <div className="flex flex-col h-full flex-1 gap-4">
           <Skeleton className="h-14 w-full" />
           <Skeleton className="flex-1 w-full" />
         </div>
@@ -25,8 +33,6 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
   }
 
   if (!data || isError) {
-    removeSessionToken(CSRF_TOKEN_KEY)
-    router.replace('/signin')
     return null
   }
 

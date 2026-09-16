@@ -34,13 +34,12 @@ import {
   FieldLegend,
   FieldSet,
 } from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 import { useGetProfile } from '@/services/get-profile'
 import { usePostProfile } from '@/services/post-profile'
 
+import { InputField, TextareaField } from '../fields'
 import {
   InputGroup,
   InputGroupAddon,
@@ -391,127 +390,51 @@ export function ProfileForm() {
       </div>
 
       <FieldGroup>
-        <Controller
-          name="imageUrl"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>URL da imagem</FieldLabel>
-              <Input
-                {...field}
-                id={field.name}
-                aria-invalid={fieldState.invalid}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
+        <InputField
+          label="URL da imagem"
+          {...form.register('imageUrl')}
+          errorMessage={form.formState.errors.imageUrl?.message}
         />
 
-        <Controller
-          name="name"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Nome</FieldLabel>
-              <Input
-                {...field}
-                id={field.name}
-                aria-invalid={fieldState.invalid}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
+        <InputField
+          label="Nome"
+          {...form.register('name')}
+          errorMessage={form.formState.errors.name?.message}
         />
 
-        <Controller
-          name="role"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Cargo</FieldLabel>
-              <Input
-                {...field}
-                id={field.name}
-                aria-invalid={fieldState.invalid}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
+        <InputField
+          label="Cargo"
+          {...form.register('role')}
+          errorMessage={form.formState.errors.role?.message}
         />
 
-        <Controller
-          name="bio"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Bio</FieldLabel>
-              <Textarea
-                {...field}
-                id={field.name}
-                aria-invalid={fieldState.invalid}
-                rows={5}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
+        <TextareaField
+          label="Bio"
+          {...form.register('bio')}
+          errorMessage={form.formState.errors.bio?.message}
+          rows={5}
         />
       </FieldGroup>
 
       <FieldSet>
         <FieldLegend>Contato</FieldLegend>
         <FieldGroup>
-          <Controller
-            name="contact.location"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>Localização</FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
+          <InputField
+            label="Localização"
+            {...form.register('contact.location')}
+            errorMessage={form.formState.errors.contact?.location?.message}
           />
 
-          <Controller
-            name="contact.linkedin"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>LinkedIn</FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
+          <InputField
+            label="LinkedIn"
+            {...form.register('contact.linkedin')}
+            errorMessage={form.formState.errors.contact?.linkedin?.message}
           />
 
-          <Controller
-            name="contact.github"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.name}>GitHub</FieldLabel>
-                <Input
-                  {...field}
-                  id={field.name}
-                  aria-invalid={fieldState.invalid}
-                />
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
+          <InputField
+            label="GitHub"
+            {...form.register('contact.github')}
+            errorMessage={form.formState.errors.contact?.github?.message}
           />
         </FieldGroup>
       </FieldSet>
@@ -549,99 +472,51 @@ export function ProfileForm() {
 
               <CardContent>
                 <FieldGroup>
-                  <Controller
-                    name={`experiences.${index}.company`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Empresa</FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                  <InputField
+                    label="Empresa"
+                    {...form.register(`experiences.${index}.company`)}
+                    errorMessage={
+                      form.formState.errors.experiences?.[index]?.company
+                        ?.message
+                    }
                   />
 
-                  <Controller
-                    name={`experiences.${index}.role`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Cargo</FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                  <InputField
+                    label="Cargo"
+                    {...form.register(`experiences.${index}.role`)}
+                    errorMessage={
+                      form.formState.errors.experiences?.[index]?.role?.message
+                    }
                   />
 
                   <div className="grid gap-4 md:grid-cols-2">
-                    <Controller
-                      name={`experiences.${index}.startDate`}
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor={field.name}>Início</FieldLabel>
-                          <Input
-                            {...field}
-                            id={field.name}
-                            type="date"
-                            aria-invalid={fieldState.invalid}
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
+                    <InputField
+                      label="Início"
+                      {...form.register(`experiences.${index}.startDate`)}
+                      errorMessage={
+                        form.formState.errors.experiences?.[index]?.startDate
+                          ?.message
+                      }
                     />
 
-                    <Controller
-                      name={`experiences.${index}.endDate`}
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor={field.name}>Fim</FieldLabel>
-                          <Input
-                            {...field}
-                            id={field.name}
-                            type="date"
-                            aria-invalid={fieldState.invalid}
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
+                    <InputField
+                      label="Fim"
+                      {...form.register(`experiences.${index}.endDate`)}
+                      errorMessage={
+                        form.formState.errors.experiences?.[index]?.endDate
+                          ?.message
+                      }
                     />
                   </div>
 
-                  <Controller
-                    name={`experiences.${index}.description`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Descrição</FieldLabel>
-                        <Textarea
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                          rows={4}
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                  <TextareaField
+                    label="Descrição"
+                    {...form.register(`experiences.${index}.description`)}
+                    errorMessage={
+                      form.formState.errors.experiences?.[index]?.description
+                        ?.message
+                    }
+                    rows={4}
                   />
 
                   <StringChipsField
@@ -698,139 +573,68 @@ export function ProfileForm() {
               </CardHeader>
               <CardContent>
                 <FieldGroup>
-                  <Controller
-                    name={`education.${index}.title`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Título</FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                  <InputField
+                    label="Título"
+                    {...form.register(`education.${index}.title`)}
+                    errorMessage={
+                      form.formState.errors.education?.[index]?.title?.message
+                    }
                   />
 
-                  <Controller
-                    name={`education.${index}.institution`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>
-                          Instituição
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                  <InputField
+                    label="Instituição"
+                    {...form.register(`education.${index}.institution`)}
+                    errorMessage={
+                      form.formState.errors.education?.[index]?.institution
+                        ?.message
+                    }
                   />
 
-                  <Controller
-                    name={`education.${index}.degree`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Grau</FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                  <InputField
+                    label="Grau"
+                    {...form.register(`education.${index}.degree`)}
+                    errorMessage={
+                      form.formState.errors.education?.[index]?.degree?.message
+                    }
                   />
 
                   <div className="grid gap-4 md:grid-cols-2">
-                    <Controller
-                      name={`education.${index}.startDate`}
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor={field.name}>Início</FieldLabel>
-                          <Input
-                            {...field}
-                            id={field.name}
-                            type="date"
-                            aria-invalid={fieldState.invalid}
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
+                    <InputField
+                      label="Início"
+                      {...form.register(`education.${index}.startDate`)}
+                      errorMessage={
+                        form.formState.errors.education?.[index]?.startDate
+                          ?.message
+                      }
                     />
 
-                    <Controller
-                      name={`education.${index}.endDate`}
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel htmlFor={field.name}>Fim</FieldLabel>
-                          <Input
-                            {...field}
-                            id={field.name}
-                            type="date"
-                            aria-invalid={fieldState.invalid}
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
+                    <InputField
+                      label="Fim"
+                      {...form.register(`education.${index}.endDate`)}
+                      errorMessage={
+                        form.formState.errors.education?.[index]?.endDate
+                          ?.message
+                      }
                     />
                   </div>
 
-                  <Controller
-                    name={`education.${index}.certificateUrl`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>
-                          URL do certificado
-                        </FieldLabel>
-                        <Input
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                  <InputField
+                    label="URL do certificado"
+                    {...form.register(`education.${index}.certificateUrl`)}
+                    errorMessage={
+                      form.formState.errors.education?.[index]?.certificateUrl
+                        ?.message
+                    }
                   />
 
-                  <Controller
-                    name={`education.${index}.description`}
-                    control={form.control}
-                    render={({ field, fieldState }) => (
-                      <Field data-invalid={fieldState.invalid}>
-                        <FieldLabel htmlFor={field.name}>Descrição</FieldLabel>
-                        <Textarea
-                          {...field}
-                          id={field.name}
-                          aria-invalid={fieldState.invalid}
-                          rows={4}
-                        />
-                        {fieldState.invalid && (
-                          <FieldError errors={[fieldState.error]} />
-                        )}
-                      </Field>
-                    )}
+                  <TextareaField
+                    label="Descrição"
+                    {...form.register(`education.${index}.description`)}
+                    errorMessage={
+                      form.formState.errors.education?.[index]?.description
+                        ?.message
+                    }
+                    rows={4}
                   />
 
                   <StringChipsField

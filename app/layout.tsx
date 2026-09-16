@@ -73,7 +73,7 @@ export default async function RootLayout({
               disableTransitionOnChange
             >
               {children}
-              <Toaster position="top-center" />
+              <Toaster position="top-center" closeButton richColors />
             </ThemeProvider>
           </ReactQueryProvider>
         </GrowthBookWrapper>
