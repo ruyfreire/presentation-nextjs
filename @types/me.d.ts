@@ -1,5 +1,8 @@
 export type MeType = {
-  id: string
+  user: {
+    id: string
+  }
+  csrfToken: string
 }
 
 export type GetMeResponseType = {

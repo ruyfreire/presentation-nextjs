@@ -2,12 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 
 import { GetMeResponseType } from '@/@types/me'
-import { api } from '@/lib/axios'
+import { api, setCsrfToken } from '@/lib/axios'
 
 const ME_QUERY_KEY = 'me'
 
 const getMe = async () => {
   const { data } = await api.get<GetMeResponseType>('/auth/me')
+  setCsrfToken(data.data.csrfToken)
   return data
 }
 

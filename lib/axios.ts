@@ -1,8 +1,19 @@
 import axios from 'axios'
 import { toast } from 'sonner'
 
-import { CSRF_TOKEN_KEY } from '@/app/constants/tokens'
-import { getSessionToken, removeSessionToken } from '@/utils/session'
+let csrfToken: string | undefined = undefined
+
+export const getCsrfToken = () => {
+  return csrfToken
+}
+
+export const setCsrfToken = (token: string) => {
+  csrfToken = token
+}
+
+export const removeCsrfToken = () => {
+  csrfToken = undefined
+}
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -11,7 +22,7 @@ const api = axios.create({
 })
 
 api.interceptors.request.use((config) => {
-  const token = getSessionToken(CSRF_TOKEN_KEY)
+  const token = getCsrfToken()
   if (token) {
     config.headers['x-csrf-token'] = token
   }
@@ -23,7 +34,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       if (error.response?.config?.url !== '/auth/me') {
-        removeSessionToken(CSRF_TOKEN_KEY)
+        removeCsrfToken()
         window.location.href = '/signin'
       }
     }

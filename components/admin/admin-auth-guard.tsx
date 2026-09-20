@@ -3,9 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-import { CSRF_TOKEN_KEY } from '@/app/constants/tokens'
+import { removeCsrfToken } from '@/lib/axios'
 import { useGetMe } from '@/services/get-me'
-import { removeSessionToken } from '@/utils/session'
 
 import { Skeleton } from '../ui/skeleton'
 
@@ -15,7 +14,7 @@ export function AdminAuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!data && !isLoading) {
-      removeSessionToken(CSRF_TOKEN_KEY)
+      removeCsrfToken()
       router.replace('/signin')
     }
   }, [data, isLoading, router])
