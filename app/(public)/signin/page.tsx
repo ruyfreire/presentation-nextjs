@@ -8,7 +8,6 @@ import { Controller, useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { CSRF_TOKEN_KEY } from '@/app/constants/tokens'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import {
@@ -19,7 +18,6 @@ import {
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
 import { usePostSignIn } from '@/services/post-signin'
-import { setSessionToken } from '@/utils/session'
 
 const signInSchema = z.object({
   email: z.email('E-mail inválido'),
@@ -45,8 +43,7 @@ export default function SignInPage() {
 
   const onSubmit = async (values: SignInFormValues) => {
     try {
-      const data = await mutateAsync(values)
-      setSessionToken(CSRF_TOKEN_KEY, data.data.csrfToken)
+      await mutateAsync(values)
       router.push('/admin')
     } catch (error) {
       if (

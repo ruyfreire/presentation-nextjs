@@ -4,7 +4,6 @@ import { Loader2, LogOutIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
-import { CSRF_TOKEN_KEY } from '@/app/constants/tokens'
 import { AppSidebar } from '@/components/admin/app-sidebar'
 import { ModeToggle } from '@/components/mode-toggle'
 import { Button } from '@/components/ui/button'
@@ -16,7 +15,6 @@ import {
 } from '@/components/ui/sidebar'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { usePostLogout } from '@/services/post-logout'
-import { removeSessionToken } from '@/utils/session'
 
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -25,7 +23,6 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const handleLogout = async () => {
     try {
       await mutateAsync()
-      removeSessionToken(CSRF_TOKEN_KEY)
       router.replace('/')
     } catch {
       toast.error('Erro ao sair')

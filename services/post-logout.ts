@@ -1,12 +1,13 @@
 import { useMutation } from '@tanstack/react-query'
 
 import { LogoutResponseType } from '@/@types/logout'
-import { api } from '@/lib/axios'
+import { api, removeCsrfToken } from '@/lib/axios'
 
 const LOGOUT_MUTATION_KEY = 'logout'
 
 const postLogout = async () => {
   const { data } = await api.post<LogoutResponseType>('/auth/logout')
+  removeCsrfToken()
   return data
 }
 
