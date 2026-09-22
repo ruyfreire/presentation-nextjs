@@ -6,10 +6,22 @@ import Link from 'next/link'
 
 import { ApiHealth } from '@/components/api-helath'
 import { Container } from '@/components/container'
+import { EvidenceCarousel } from '@/components/evidence-carousel'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 
-import { aboutDecisions, aboutIntro, aboutStack } from './about-content'
+import {
+  aboutDecisions,
+  aboutEvidence,
+  aboutIntro,
+  aboutStack,
+} from './about-content'
+
+export const metadata: Metadata = {
+  title: 'Sobre este projeto',
+  description:
+    'Informações sobre a construção do projeto e as tecnologias utilizadas.',
+}
 
 function Reveal({
   children,
@@ -30,7 +42,12 @@ function Reveal({
   )
 }
 
-function GithubButton({ href, label }: { href: string; label: string }) {
+type GithubButtonProps = {
+  href: string
+  label: string
+}
+
+function GithubButton({ href, label }: GithubButtonProps) {
   return (
     <Button asChild variant="link" size="xs" className="cursor-pointer p-0">
       <a href={href} target="_blank" rel="noopener noreferrer">
@@ -44,10 +61,19 @@ function GithubButton({ href, label }: { href: string; label: string }) {
   )
 }
 
-export const metadata: Metadata = {
-  title: 'Sobre este projeto',
-  description:
-    'Informações sobre a construção do projeto e as tecnologias utilizadas.',
+type SectionProps = {
+  title: string
+  children: React.ReactNode
+}
+
+function Section({ title, children }: SectionProps) {
+  return (
+    <section className="flex flex-col gap-6">
+      <h2 className="text-2xl font-semibold">{title}</h2>
+
+      <Reveal>{children}</Reveal>
+    </section>
+  )
 }
 
 export default function About() {
@@ -75,15 +101,13 @@ export default function About() {
             width={808}
             height={439}
             className="w-full h-auto max-w-xl object-cover"
-            loading="lazy"
+            loading="eager"
           />
         </div>
       </section>
 
-      <section className="flex flex-col gap-6">
-        <h2 className="text-2xl font-semibold">{aboutDecisions.title}</h2>
-
-        <Reveal className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <Section title={aboutDecisions.title}>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {aboutDecisions.items.map((item) => (
             <article
               key={item.title}
@@ -97,29 +121,29 @@ export default function About() {
               ))}
             </article>
           ))}
-        </Reveal>
-      </section>
+        </div>
+      </Section>
 
-      <section className="flex flex-col gap-6">
-        <h2 className="text-2xl font-semibold">{aboutStack.title}</h2>
+      <Section title={aboutEvidence.title}>
+        <EvidenceCarousel items={aboutEvidence.items} />
+      </Section>
 
-        <Reveal className="flex flex-col gap-6">
-          <div className="flex flex-col gap-4">
-            {aboutStack.groups.map((group) => (
-              <div key={group.label} className="space-y-2">
-                <h3 className="text-sm font-medium">{group.label}</h3>
-                <div className="flex flex-wrap gap-1">
-                  {group.items.map((item) => (
-                    <Badge key={item} variant="secondary">
-                      {item}
-                    </Badge>
-                  ))}
-                </div>
+      <Section title={aboutStack.title}>
+        <div className="flex flex-col gap-4">
+          {aboutStack.groups.map((group) => (
+            <div key={group.label} className="space-y-2">
+              <h3 className="text-sm font-medium">{group.label}</h3>
+              <div className="flex flex-wrap gap-1">
+                {group.items.map((item) => (
+                  <Badge key={item} variant="secondary">
+                    {item}
+                  </Badge>
+                ))}
               </div>
-            ))}
-          </div>
-        </Reveal>
-      </section>
+            </div>
+          ))}
+        </div>
+      </Section>
 
       <div>
         <hr className="mb-4" />

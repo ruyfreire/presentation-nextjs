@@ -1,3 +1,5 @@
+import { EvidenceItem } from '@/@types/about'
+
 export const aboutIntro = {
   title: 'Sobre este projeto',
   paragraphs: [
@@ -51,6 +53,40 @@ export const aboutDecisions = {
         'Contentsquare (Hotjar) entra para comportamento de quem visita — sessão e clique.',
         'A API tem testes (Jest), inclusive com repositório em memória, sem depender do Mongo. Os dois repositórios passam por lint, formatação, verificação de tipos e CI a cada pull request.',
       ],
+    },
+  ],
+}
+
+export const aboutEvidence: { title: string; items: EvidenceItem[] } = {
+  title: 'Algumas camadas',
+  items: [
+    {
+      title: 'New Relic',
+      src: '/carousel/newrelic.png',
+      caption: 'Trace de ponta a ponta.',
+      width: 1920,
+      height: 1080,
+    },
+    {
+      title: 'Contentsquare (Hotjar)',
+      src: '/carousel/contentsquare.png',
+      caption: 'Mapa de comportamento dos visitantes.',
+      width: 1920,
+      height: 1080,
+    },
+    {
+      title: 'Painel administrativo',
+      src: '/carousel/admin.png',
+      caption: 'Edição do currículo de forma rápida e segura.',
+      width: 1132,
+      height: 995,
+    },
+    {
+      title: 'GitHub Actions',
+      src: '/carousel/github-actions.png',
+      caption: 'CI no PR com check obrigatório para o merge.',
+      width: 1125,
+      height: 402,
     },
   ],
 }

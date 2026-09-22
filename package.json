@@ -28,6 +28,7 @@
     "clsx": "^2.1.1",
     "cn": "^0.3.0",
     "date-fns": "^4.4.0",
+    "embla-carousel-react": "^8.6.0",
     "lucide-react": "^1.17.0",
     "motion": "^12.40.0",
     "newrelic": "^14.1.0",
