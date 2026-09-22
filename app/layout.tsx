@@ -62,7 +62,7 @@ export default function RootLayout({
             <Script
               id="contentsquare-agent"
               src="https://t.contentsquare.net/uxa/b7bcadbeefd8e.js"
-              strategy="beforeInteractive"
+              strategy="afterInteractive"
             />
 
             <Script

@@ -26,10 +26,11 @@ export const aboutDecisions = {
       ],
     },
     {
-      title: 'Persistência e publicação versionada',
+      title: 'Persistência, versionamento e cache',
       paragraphs: [
         'O currículo ainda evolui em estrutura e conteúdo. O modelo documental do MongoDB oferece flexibilidade para essas mudanças sem exigir um schema relacional rígido.',
         'Cada publicação cria um novo documento com uma versão incremental. A aplicação lê somente a versão vigente, enquanto as anteriores permanecem preservadas como trilha de auditoria e base para um possível rollback.',
+        'Para reduzir a latência e a dependência da disponibilidade imediata da API, o Next.js mantém em cache o resultado da leitura do perfil.',
       ],
     },
     {
@@ -49,7 +50,8 @@ export const aboutDecisions = {
     {
       title: 'Operação, observabilidade e qualidade',
       paragraphs: [
-        'O frontend está hospedado na Vercel, a API no Render e os dados no MongoDB Atlas. Como o plano gratuito do Render suspende a API após períodos sem tráfego, a interface comunica o cold start ao visitante em vez de apresentar uma falha silenciosa.',
+        'O frontend está hospedado na Vercel, a API no Render e os dados no MongoDB Atlas, todos em planos gratuitos.',
+        'Quando uma leitura não pode ser atendida pelo cache e encontra a API suspensa por falta de tráfego, a interface informa ao visitante que o serviço está iniciando, em vez de apresentar uma falha silenciosa.',
         'New Relic monitora erros e transações no frontend e na API, enquanto o Contentsquare registra sinais de comportamento no site público.',
         'Os repositórios executam lint, formatação e verificação de tipos no CI.',
       ],

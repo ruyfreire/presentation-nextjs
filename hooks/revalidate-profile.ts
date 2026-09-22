@@ -2,8 +2,10 @@
 
 import { updateTag } from 'next/cache'
 
-import { PROFILE_QUERY_KEY } from '@/services/get-profile'
+import { PROFILE_CACHE_TAG } from '@/configs/profile-cache'
+import { getProfile } from '@/services/get-profile-cache'
 
 export async function revalidateProfile() {
-  updateTag(PROFILE_QUERY_KEY)
+  updateTag(PROFILE_CACHE_TAG)
+  await getProfile()
 }

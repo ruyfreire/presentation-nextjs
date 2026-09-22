@@ -3,15 +3,14 @@
 import { cacheLife, cacheTag } from 'next/cache'
 
 import { GetProfileResponseType } from '@/@types/profile'
-import { api } from '@/lib/axios'
-
-import { PROFILE_QUERY_KEY } from './get-profile'
+import { PROFILE_CACHE_TAG } from '@/configs/profile-cache'
+import { apiServer } from '@/lib/axios-server'
 
 export const getProfile = async () => {
-  cacheTag(PROFILE_QUERY_KEY)
-
-  const { data } = await api.get<GetProfileResponseType>('/profile')
-
   cacheLife('max')
+  cacheTag(PROFILE_CACHE_TAG)
+
+  const { data } = await apiServer.get<GetProfileResponseType>('/profile')
+
   return data
 }
