@@ -3,8 +3,8 @@ import { EvidenceItem } from '@/@types/about'
 export const aboutIntro = {
   title: 'Sobre este projeto',
   paragraphs: [
-    'Este site é o meu currículo. O conteúdo não fica estático no repositório: é servido por uma API que eu construí, usando tecnologias que já utilizei no trabalho, estudei ou estou estudando.',
-    'Front, API e banco formam um sistema que eu consigo evoluir — novos campos, novos textos, um painel administrativo pela frente — sem reconstruir a interface a cada mudança.',
+    'Este site é o meu currículo e também um projeto de engenharia. Ele reúne interface pública, API, persistência e um fluxo de publicação.',
+    'As decisões abaixo registram o que escolhi simplificar, onde aceitei complexidade e como tratei os limites da infraestrutura.',
   ],
 }
 
@@ -12,46 +12,48 @@ export const aboutDecisions = {
   title: 'Decisões',
   items: [
     {
-      title: 'Por que não é uma página estática',
+      title: 'Currículo como sistema',
       paragraphs: [
-        'Uma página estática resolveria a apresentação. Eu quis um sistema: contrato HTTP, persistência, autenticação na escrita e espaço para crescer.',
-        'O currículo continua sendo o produto visível. A engenharia por trás é o que este projeto existe para demonstrar.',
+        'Uma página estática seria suficiente para apresentar o currículo. Escolhi ir além para trabalhar com problemas que ela não teria: publicação de conteúdo, autenticação, persistência e operação.',
+        'O currículo continua sendo o produto visível. A indicação de disponibilidade profissional, por exemplo, é controlada por uma feature flag no GrowthBook, sem exigir uma nova publicação do frontend.',
       ],
     },
     {
-      title: 'Front e API separados',
+      title: 'Arquitetura desacoplada',
       paragraphs: [
-        'A interface está em Next.js; a API, em NestJS. São dois repositórios e dois deploys, conversando por REST.',
-        'Daria para concentrar tudo no Next. A separação existe porque essa divisão é amplamente usada no ecossistema Node — e é a que eu já pratico: React de um lado, Nest do outro.',
+        'Eu poderia manter tudo no Next.js. Preferi separar a interface em Next.js e a API em NestJS para preservar um contrato HTTP independente e reproduzir uma divisão que já utilizo profissionalmente.',
+        'Essa escolha aumenta a operação: são dois repositórios, dois deploys e entram em cena CORS, cookies entre domínios e rastreamento distribuído. É uma complexidade que aceitei porque esses limites também fazem parte do tipo de sistema que o projeto representa.',
       ],
     },
     {
-      title: 'Dados: Mongo e versionamento',
+      title: 'Persistência, versionamento e cache',
       paragraphs: [
-        'Neste projeto a estrutura do currículo ainda muda (campos, textos, um admin pela frente). Mongo evita uma migration a cada alteração de schema.',
-        'Cada publicação grava uma versão nova do perfil, no espírito de rascunho e publicação. Assim o histórico não se perde quando o conteúdo é sobrescrito.',
+        'Como a estrutura do currículo ainda muda, preferi o modelo documental do MongoDB a definir cedo um schema relacional mais rígido.',
+        'Cada publicação cria um novo documento com uma versão incremental. A aplicação lê somente a versão vigente, enquanto as anteriores permanecem preservadas como trilha de auditoria e base para um possível rollback.',
+        'Para não consultar a API em toda visita, o Next.js mantém o perfil em cache. Depois de cada publicação, esse cache é invalidado e aquecido novamente com a versão vigente.',
       ],
     },
     {
-      title: 'Leitura pública, escrita autenticada',
+      title: 'Segurança e contrato da API',
       paragraphs: [
-        'A leitura do currículo é pública. A escrita não.',
-        'O `GET` não exige autenticação. O `POST` exige JWT, para impedir alteração indevida e para o painel administrativo já nascer atrás de autenticação.',
+        'Qualquer visitante pode ler o currículo, mas somente o painel pode publicar uma nova versão. A sessão utiliza JWT em cookie HttpOnly, e as mutações são protegidas por CSRF.',
+        'Na borda, a API aplica CORS restrito, Helmet e limitação de requisições. O Swagger expõe o contrato em modo somente leitura, sem permitir a execução de mutações pela documentação.',
       ],
     },
     {
-      title: 'Hospedagem',
+      title: 'Painel administrativo e validação',
       paragraphs: [
-        'Frontend na Vercel, API no Render, dados no MongoDB Atlas — planos gratuitos.',
-        'No Render a API dorme sem tráfego. Na primeira visita o site informa que os servidores estão subindo, em vez de falhar em silêncio.',
+        'O painel é a ferramenta que uso para editar e publicar o conteúdo exibido na página inicial.',
+        'O formulário valida os dados para oferecer feedback imediato. A API valida novamente porque não depende das garantias do cliente.',
       ],
     },
     {
-      title: 'Observabilidade e qualidade',
+      title: 'Operação, observabilidade e qualidade',
       paragraphs: [
-        'New Relic: o plano gratuito cobre o que este projeto precisa (erros e visibilidade da API).',
-        'Contentsquare (Hotjar) entra para comportamento de quem visita — sessão e clique.',
-        'A API tem testes (Jest), inclusive com repositório em memória, sem depender do Mongo. Os dois repositórios passam por lint, formatação, verificação de tipos e CI a cada pull request.',
+        'Escolhi manter o frontend na Vercel, a API no Render e os dados no MongoDB Atlas, todos em planos gratuitos. Essa restrição traz um efeito concreto: o Render suspende a API após períodos sem tráfego.',
+        'O cache absorve a maior parte das leituras. Se o perfil ainda não estiver em cache e o Render estiver iniciando, a interface explica a espera em vez de aparentar uma falha.',
+        'New Relic monitora erros e transações no frontend e na API, enquanto o Contentsquare registra sinais de comportamento no site público.',
+        'Os repositórios executam lint, formatação e verificação de tipos no CI.',
       ],
     },
   ],
@@ -77,7 +79,8 @@ export const aboutEvidence: { title: string; items: EvidenceItem[] } = {
     {
       title: 'Painel administrativo',
       src: '/carousel/admin.png',
-      caption: 'Edição do currículo de forma rápida e segura.',
+      caption:
+        'O painel publica o currículo: mesma API, sessão e uma versão nova.',
       width: 1132,
       height: 995,
     },
@@ -113,12 +116,23 @@ export const aboutStack = {
         'shadcn/ui (Radix)',
         'TanStack Query',
         'Axios',
+        'React Hook Form',
         'Motion',
       ],
     },
     {
       label: 'API',
-      items: ['NestJS', 'TypeScript', 'JWT', 'class-validator', 'Zod'],
+      items: ['NestJS', 'TypeScript', 'Swagger', 'class-validator', 'Zod'],
+    },
+    {
+      label: 'Acesso',
+      items: [
+        'JWT em cookie HttpOnly',
+        'CSRF',
+        'Helmet',
+        'CORS restrito',
+        'limite de taxa',
+      ],
     },
     {
       label: 'Dados',
@@ -136,6 +150,7 @@ export const aboutStack = {
         'Atlas',
         'New Relic',
         'Contentsquare (Hotjar)',
+        'GrowthBook',
       ],
     },
   ],

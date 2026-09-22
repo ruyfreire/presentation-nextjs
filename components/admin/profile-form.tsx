@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { isAxiosError } from 'axios'
 import { format, isValid, parseISO } from 'date-fns'
 import { Loader2, PlusIcon, Trash2Icon, X, XIcon } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import {
   Control,
   Controller,
@@ -35,6 +35,7 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { Skeleton } from '@/components/ui/skeleton'
+import { revalidateProfile } from '@/hooks/revalidate-profile'
 import { cn } from '@/lib/utils'
 import { useGetProfile } from '@/services/get-profile'
 import { usePostProfile } from '@/services/post-profile'
@@ -320,6 +321,8 @@ function InputSkeleton({ height }: InputSkeletonProps) {
 }
 
 export function ProfileForm() {
+  const [isRevalidating, startRevalidation] = useTransition()
+
   const { data: response, isLoading } = useGetProfile()
   const { mutateAsync, isPending } = usePostProfile()
   const profile = response?.data
@@ -347,11 +350,26 @@ export function ProfileForm() {
     form.reset(mapProfileToForm(profile))
   }, [form, profile])
 
+  const refreshProfileCache = (showSuccessToast: boolean = false) => {
+    startRevalidation(async () => {
+      try {
+        await revalidateProfile()
+        if (showSuccessToast) {
+          toast.success('Cache atualizado com sucesso')
+        }
+      } catch (error) {
+        console.error(error)
+        toast.error('Erro ao atualizar cache')
+      }
+    })
+  }
+
   const onSubmit = async (values: ProfileFormValues) => {
     try {
       const data = await mutateAsync(mapFormToPayload(values))
       form.reset(mapProfileToForm(data.data))
       toast.success('Salvo com sucesso')
+      refreshProfileCache()
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 400) {
         toast.error('Dados inválidos')
@@ -675,14 +693,27 @@ export function ProfileForm() {
         </Button>
       </FieldSet>
 
-      <Button
-        type="submit"
-        className="self-end"
-        disabled={!isDirty || !isValid || isPending}
-      >
-        {isPending && <Loader2 className="animate-spin" />}
-        Salvar
-      </Button>
+      <div className="flex gap-2 justify-between">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => refreshProfileCache(true)}
+          disabled={isPending || isRevalidating}
+          aria-disabled={isPending || isRevalidating}
+        >
+          {isRevalidating && <Loader2 className="animate-spin" />}
+          Atualizar cache
+        </Button>
+
+        <Button
+          type="submit"
+          disabled={!isDirty || !isValid || isPending}
+          aria-disabled={!isDirty || !isValid || isPending}
+        >
+          {isPending && <Loader2 className="animate-spin" />}
+          Salvar
+        </Button>
+      </div>
     </form>
   )
 }

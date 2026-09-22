@@ -1,14 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { GetProfileResponseType } from '@/@types/profile'
-import { api } from '@/lib/axios'
+import { getProfile } from './get-profile-cache'
 
 const PROFILE_QUERY_KEY = 'profile'
-
-const getProfile = async () => {
-  const { data } = await api.get<GetProfileResponseType>('/profile')
-  return data
-}
 
 const useGetProfile = () => {
   return useQuery({
@@ -17,4 +11,4 @@ const useGetProfile = () => {
   })
 }
 
-export { getProfile, PROFILE_QUERY_KEY, useGetProfile }
+export { PROFILE_QUERY_KEY, useGetProfile }
