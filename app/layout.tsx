@@ -1,6 +1,5 @@
 import './globals.css'
 
-import { GrowthBook } from '@growthbook/growthbook'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import Script from 'next/script'
@@ -9,13 +8,9 @@ import GrowthBookWrapper from '@/components/growthbook-wrapper'
 import ReactQueryProvider from '@/components/react-query-provider'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
-import {
-  growthbookApiHost,
-  growthbookClientKey,
-  growthbookEnabled,
-} from '@/configs/growthbook'
 import { newRelicScript } from '@/configs/newrelic-script'
 import { cn } from '@/lib/utils'
+import { getSiteUrl } from '@/utils/site-url'
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -24,6 +19,7 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
+  metadataBase: getSiteUrl(),
   title: {
     template: '%s | Ruy Freire - Engenheiro de Software',
     default: 'Ruy Freire - Engenheiro de Software',
@@ -35,28 +31,11 @@ export const metadata: Metadata = {
   },
 }
 
-const initGrowthbook = async () => {
-  if (!growthbookEnabled) {
-    return undefined
-  }
-
-  const gb = new GrowthBook({
-    apiHost: growthbookApiHost,
-    clientKey: growthbookClientKey,
-  })
-  await gb.init({ timeout: 1_000 })
-  const payload = gb.getDecryptedPayload()
-  gb.destroy()
-  return payload
-}
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const payload = await initGrowthbook()
-
   return (
     <html
       lang="pt-BR"
@@ -64,7 +43,7 @@ export default async function RootLayout({
       className={cn('h-full', 'antialiased', 'font-sans', montserrat.className)}
     >
       <body className="min-h-svh tracking-wide">
-        <GrowthBookWrapper payload={payload}>
+        <GrowthBookWrapper>
           <ReactQueryProvider>
             <ThemeProvider
               attribute="class"

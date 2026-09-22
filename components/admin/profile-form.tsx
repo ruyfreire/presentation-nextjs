@@ -35,6 +35,7 @@ import {
   FieldSet,
 } from '@/components/ui/field'
 import { Skeleton } from '@/components/ui/skeleton'
+import { revalidateProfile } from '@/hooks/revalidate-profile'
 import { cn } from '@/lib/utils'
 import { useGetProfile } from '@/services/get-profile'
 import { usePostProfile } from '@/services/post-profile'
@@ -352,6 +353,7 @@ export function ProfileForm() {
       const data = await mutateAsync(mapFormToPayload(values))
       form.reset(mapProfileToForm(data.data))
       toast.success('Salvo com sucesso')
+      revalidateProfile()
     } catch (error) {
       if (isAxiosError(error) && error.response?.status === 400) {
         toast.error('Dados inválidos')
