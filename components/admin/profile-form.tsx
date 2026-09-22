@@ -394,6 +394,7 @@ export function ProfileForm() {
           label="URL da imagem"
           {...form.register('imageUrl')}
           errorMessage={form.formState.errors.imageUrl?.message}
+          type="url"
         />
 
         <InputField
@@ -429,12 +430,14 @@ export function ProfileForm() {
             label="LinkedIn"
             {...form.register('contact.linkedin')}
             errorMessage={form.formState.errors.contact?.linkedin?.message}
+            type="url"
           />
 
           <InputField
             label="GitHub"
             {...form.register('contact.github')}
             errorMessage={form.formState.errors.contact?.github?.message}
+            type="url"
           />
         </FieldGroup>
       </FieldSet>
@@ -497,6 +500,7 @@ export function ProfileForm() {
                         form.formState.errors.experiences?.[index]?.startDate
                           ?.message
                       }
+                      type="date"
                     />
 
                     <InputField
@@ -506,6 +510,7 @@ export function ProfileForm() {
                         form.formState.errors.experiences?.[index]?.endDate
                           ?.message
                       }
+                      type="date"
                     />
                   </div>
 
@@ -606,6 +611,7 @@ export function ProfileForm() {
                         form.formState.errors.education?.[index]?.startDate
                           ?.message
                       }
+                      type="date"
                     />
 
                     <InputField
@@ -615,6 +621,7 @@ export function ProfileForm() {
                         form.formState.errors.education?.[index]?.endDate
                           ?.message
                       }
+                      type="date"
                     />
                   </div>
 
@@ -625,6 +632,7 @@ export function ProfileForm() {
                       form.formState.errors.education?.[index]?.certificateUrl
                         ?.message
                     }
+                    type="url"
                   />
 
                   <TextareaField
