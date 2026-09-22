@@ -3,8 +3,8 @@ import { EvidenceItem } from '@/@types/about'
 export const aboutIntro = {
   title: 'Sobre este projeto',
   paragraphs: [
-    'Este site é o meu currículo e também um projeto de engenharia. Ele reúne interface pública, API, banco de dados e painel administrativo.',
-    'As decisões abaixo mostram os problemas que escolhi resolver, os limites da arquitetura e os cuidados adotados para manter o sistema seguro e confiável.',
+    'Este site é o meu currículo e também um projeto de engenharia. Ele reúne interface pública, API, persistência e um fluxo de publicação.',
+    'As decisões abaixo registram o que escolhi simplificar, onde aceitei complexidade e como tratei os limites da infraestrutura.',
   ],
 }
 
@@ -14,44 +14,44 @@ export const aboutDecisions = {
     {
       title: 'Currículo como sistema',
       paragraphs: [
-        'Uma página estática seria suficiente para apresentar o currículo. Optei por construir um sistema completo para demonstrar integração entre interface, API, persistência e administração de conteúdo.',
-        'O currículo é o produto visível; a arquitetura por trás dele demonstra como estruturo uma aplicação com abertura para evoluir. O front também utiliza o GrowthBook para controlar via feature flags recursos como a indicação de disponibilidade profissional.',
+        'Uma página estática seria suficiente para apresentar o currículo. Escolhi ir além para trabalhar com problemas que ela não teria: publicação de conteúdo, autenticação, persistência e operação.',
+        'O currículo continua sendo o produto visível. A indicação de disponibilidade profissional, por exemplo, é controlada por uma feature flag no GrowthBook, sem exigir uma nova publicação do frontend.',
       ],
     },
     {
       title: 'Arquitetura desacoplada',
       paragraphs: [
-        'A interface utiliza Next.js, enquanto a API foi construída com NestJS. Os projetos possuem repositórios e deploys independentes e se comunicam por REST.',
-        'A solução poderia estar concentrada no Next.js, mas a separação torna explícitos o contrato HTTP, os limites entre as camadas e desafios como CORS, autenticação entre domínios e observabilidade distribuída.',
+        'Eu poderia manter tudo no Next.js. Preferi separar a interface em Next.js e a API em NestJS para preservar um contrato HTTP independente e reproduzir uma divisão que já utilizo profissionalmente.',
+        'Essa escolha aumenta a operação: são dois repositórios, dois deploys e entram em cena CORS, cookies entre domínios e rastreamento distribuído. É uma complexidade que aceitei porque esses limites também fazem parte do tipo de sistema que o projeto representa.',
       ],
     },
     {
       title: 'Persistência, versionamento e cache',
       paragraphs: [
-        'O currículo ainda evolui em estrutura e conteúdo. O modelo documental do MongoDB oferece flexibilidade para essas mudanças sem exigir um schema relacional rígido.',
+        'Como a estrutura do currículo ainda muda, preferi o modelo documental do MongoDB a definir cedo um schema relacional mais rígido.',
         'Cada publicação cria um novo documento com uma versão incremental. A aplicação lê somente a versão vigente, enquanto as anteriores permanecem preservadas como trilha de auditoria e base para um possível rollback.',
-        'Para reduzir a latência e a dependência da disponibilidade imediata da API, o Next.js mantém em cache o resultado da leitura do perfil.',
+        'Para não consultar a API em toda visita, o Next.js mantém o perfil em cache. Depois de cada publicação, esse cache é invalidado e aquecido novamente com a versão vigente.',
       ],
     },
     {
       title: 'Segurança e contrato da API',
       paragraphs: [
-        'A leitura do currículo é pública, mas toda escrita exige autenticação. A sessão utiliza JWT em cookie HttpOnly, e as mutações são protegidas por CSRF.',
-        'A API também aplica CORS restrito, Helmet e limitação de requisições. O Swagger documenta as rotas públicas e protegidas em modo somente leitura, permitindo consultar o contrato sem executar mutações.',
+        'Qualquer visitante pode ler o currículo, mas somente o painel pode publicar uma nova versão. A sessão utiliza JWT em cookie HttpOnly, e as mutações são protegidas por CSRF.',
+        'Na borda, a API aplica CORS restrito, Helmet e limitação de requisições. O Swagger expõe o contrato em modo somente leitura, sem permitir a execução de mutações pela documentação.',
       ],
     },
     {
       title: 'Painel administrativo e validação',
       paragraphs: [
-        'O painel administrativo permite editar e publicar o conteúdo exibido na página inicial.',
-        'O formulário valida os dados para oferecer feedback imediato. A API aplica suas próprias validações como autoridade sobre os dados, sem depender das garantias do cliente.',
+        'O painel é a ferramenta que uso para editar e publicar o conteúdo exibido na página inicial.',
+        'O formulário valida os dados para oferecer feedback imediato. A API valida novamente porque não depende das garantias do cliente.',
       ],
     },
     {
       title: 'Operação, observabilidade e qualidade',
       paragraphs: [
-        'O frontend está hospedado na Vercel, a API no Render e os dados no MongoDB Atlas, todos em planos gratuitos.',
-        'Quando uma leitura não pode ser atendida pelo cache e encontra a API suspensa por falta de tráfego, a interface informa ao visitante que o serviço está iniciando, em vez de apresentar uma falha silenciosa.',
+        'Escolhi manter o frontend na Vercel, a API no Render e os dados no MongoDB Atlas, todos em planos gratuitos. Essa restrição traz um efeito concreto: o Render suspende a API após períodos sem tráfego.',
+        'O cache absorve a maior parte das leituras. Se o perfil ainda não estiver em cache e o Render estiver iniciando, a interface explica a espera em vez de aparentar uma falha.',
         'New Relic monitora erros e transações no frontend e na API, enquanto o Contentsquare registra sinais de comportamento no site público.',
         'Os repositórios executam lint, formatação e verificação de tipos no CI.',
       ],
