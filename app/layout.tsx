@@ -57,7 +57,7 @@ export default function RootLayout({
           </ReactQueryProvider>
         </GrowthBookWrapper>
 
-        {process.env.NODE_ENV === 'production' && (
+        {process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' && (
           <>
             <Script
               id="contentsquare-agent"
