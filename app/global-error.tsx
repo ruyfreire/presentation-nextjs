@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 
 import { ProfileErrorMessage } from '@/components/profile-error-message'
 import { Button } from '@/components/ui/button'
+import { notifyError } from '@/utils/newrelic-actions'
 
 export default function GlobalError({
   error,
@@ -14,6 +15,7 @@ export default function GlobalError({
 }) {
   useEffect(() => {
     console.error(error)
+    notifyError(error, { digest: error.digest })
   }, [error])
 
   return (
