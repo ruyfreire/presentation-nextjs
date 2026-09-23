@@ -1,5 +1,6 @@
 import './globals.css'
 
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { Montserrat } from 'next/font/google'
 import Script from 'next/script'
@@ -56,6 +57,8 @@ export default function RootLayout({
             </ThemeProvider>
           </ReactQueryProvider>
         </GrowthBookWrapper>
+
+        <SpeedInsights />
 
         {process.env.NODE_ENV === 'production' && (
           <>
