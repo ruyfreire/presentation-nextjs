@@ -3,6 +3,7 @@
 import { isAxiosError } from 'axios'
 import { useEffect, useRef, useState } from 'react'
 
+import { GetProfileResponseType } from '@/@types/profile'
 import { Container } from '@/components/container'
 import { ExperienceTimeline } from '@/components/experience-timeline'
 import { Hero } from '@/components/hero'
@@ -16,7 +17,11 @@ import { formatDate } from '@/utils/formatters'
 
 const TIME_LIMIT = 5_000 // 5 seconds in milliseconds
 
-export function ProfileContent() {
+export function ProfileContent({
+  initialProfile,
+}: {
+  initialProfile?: GetProfileResponseType
+}) {
   const startTime = useRef<number | null>(null)
   const [loadingTime, setLoadingTime] = useState(false)
 
@@ -25,7 +30,7 @@ export function ProfileContent() {
     isLoading: isLoadingProfile,
     isError,
     failureReason,
-  } = useGetProfile()
+  } = useGetProfile({ staleTime: Infinity, initialData: initialProfile })
 
   const formatDateRange = ({
     startDate,

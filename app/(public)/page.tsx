@@ -1,29 +1,16 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query'
 import { cacheLife, cacheTag } from 'next/cache'
 
+import { PROFILE_CACHE_TAG } from '@/configs/profile-cache'
 import { getProfileCache } from '@/services/get-profile-cache'
 
 import { ProfileContent } from './profile-content'
 
 export default async function Home() {
   'use cache'
-  cacheLife('days')
-  cacheTag('profile_page')
+  cacheLife('weeks')
+  cacheTag(PROFILE_CACHE_TAG)
 
-  const queryClient = new QueryClient()
+  const initialProfile = await getProfileCache().catch(() => undefined)
 
-  await queryClient.prefetchQuery({
-    queryKey: ['profile'],
-    queryFn: getProfileCache,
-  })
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProfileContent />
-    </HydrationBoundary>
-  )
+  return <ProfileContent initialProfile={initialProfile} />
 }
