@@ -165,7 +165,8 @@ function Sidebar({
 
   if (collapsible === 'none') {
     return (
-      <div
+      <aside
+        aria-label="Menu"
         data-slot="sidebar"
         className={cn(
           'flex h-full w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground',
@@ -174,7 +175,7 @@ function Sidebar({
         {...props}
       >
         {children}
-      </div>
+      </aside>
     )
   }
 
@@ -195,8 +196,8 @@ function Sidebar({
           side={side}
         >
           <SheetHeader className="sr-only">
-            <SheetTitle>Sidebar</SheetTitle>
-            <SheetDescription>Displays the mobile sidebar.</SheetDescription>
+            <SheetTitle>Menu</SheetTitle>
+            <SheetDescription>Mostrar o menu no celular</SheetDescription>
           </SheetHeader>
           <div className="flex h-full w-full flex-col">{children}</div>
         </SheetContent>
@@ -205,13 +206,14 @@ function Sidebar({
   }
 
   return (
-    <div
+    <aside
       className="group peer hidden text-sidebar-foreground md:block"
       data-state={state}
       data-collapsible={state === 'collapsed' ? collapsible : ''}
       data-variant={variant}
       data-side={side}
       data-slot="sidebar"
+      aria-label="Menu"
     >
       {/* This is what handles the sidebar gap on desktop */}
       <div
@@ -246,7 +248,7 @@ function Sidebar({
           {children}
         </div>
       </div>
-    </div>
+    </aside>
   )
 }
 
@@ -271,7 +273,7 @@ function SidebarTrigger({
       {...props}
     >
       <PanelLeftIcon />
-      <span className="sr-only">Toggle Sidebar</span>
+      <span className="sr-only">Alternar menu</span>
     </Button>
   )
 }
@@ -283,10 +285,10 @@ function SidebarRail({ className, ...props }: React.ComponentProps<'button'>) {
     <button
       data-sidebar="rail"
       data-slot="sidebar-rail"
-      aria-label="Toggle Sidebar"
+      aria-label="Alternar menu"
       tabIndex={-1}
       onClick={toggleSidebar}
-      title="Toggle Sidebar"
+      title="Alternar menu"
       className={cn(
         'absolute inset-y-0 z-20 hidden w-4 transition-all ease-linear group-data-[side=left]:-right-4 group-data-[side=right]:left-0 after:absolute after:inset-y-0 after:start-1/2 after:w-[2px] hover:after:bg-sidebar-border sm:flex ltr:-translate-x-1/2 rtl:-translate-x-1/2',
         'in-data-[side=left]:cursor-w-resize in-data-[side=right]:cursor-e-resize',
@@ -431,10 +433,13 @@ function SidebarGroupAction({
 
 function SidebarGroupContent({
   className,
+  asChild = false,
   ...props
-}: React.ComponentProps<'div'>) {
+}: React.ComponentProps<'div'> & { asChild?: boolean }) {
+  const Comp = asChild ? Slot.Root : 'div'
+
   return (
-    <div
+    <Comp
       data-slot="sidebar-group-content"
       data-sidebar="group-content"
       className={cn('w-full text-sm', className)}
@@ -509,6 +514,7 @@ function SidebarMenuButton({
       data-sidebar="menu-button"
       data-size={size}
       data-active={isActive}
+      aria-current={isActive ? 'page' : undefined}
       className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
       {...props}
     />

@@ -9,9 +9,12 @@ type InputFieldProps = React.ComponentProps<typeof Input> & {
 function InputField({ errorMessage, label, ...props }: InputFieldProps) {
   return (
     <Field data-invalid={!!errorMessage}>
-      {label && <FieldLabel htmlFor={props.id}>{label}</FieldLabel>}
+      {label && (
+        <FieldLabel htmlFor={props.id || props.name}>{label}</FieldLabel>
+      )}
       <Input
         {...props}
+        id={props.id || props.name}
         className="truncate"
         onFocus={(event) => {
           const input = event.currentTarget

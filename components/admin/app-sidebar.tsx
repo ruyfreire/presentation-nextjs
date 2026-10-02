@@ -1,7 +1,8 @@
 'use client'
 
-import { LogOutIcon, UserRoundIcon } from 'lucide-react'
+import { Loader2Icon, LogOutIcon, UserRoundIcon } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 import {
   Sidebar,
@@ -20,33 +21,49 @@ type AppSidebarProps = {
 }
 
 export function AppSidebar({ onLogoutAction, isLoggingOut }: AppSidebarProps) {
+  const pathname = usePathname()
+
+  const isActive = (path: string) => pathname === path
+
   return (
     <Sidebar collapsible="offcanvas">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive tooltip="Perfil">
-                  <Link href="/admin">
-                    <UserRoundIcon />
-                    <span>Perfil</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
+          <SidebarGroupContent asChild aria-label="Navegação">
+            <nav>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={isActive('/admin')}
+                    tooltip="Perfil"
+                  >
+                    <Link href="/admin">
+                      <UserRoundIcon />
+                      <span>Perfil</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </nav>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               onClick={onLogoutAction}
               disabled={isLoggingOut}
+              aria-busy={isLoggingOut}
               tooltip="Sair"
             >
-              <LogOutIcon />
+              {isLoggingOut ? (
+                <Loader2Icon className="animate-spin" />
+              ) : (
+                <LogOutIcon />
+              )}
               <span>Sair</span>
             </SidebarMenuButton>
           </SidebarMenuItem>

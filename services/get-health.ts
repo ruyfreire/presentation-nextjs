@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 
+import { GetApiStatusResponseType } from '@/@types/api-status'
 import { api } from '@/lib/axios'
 
 const HEALTH_QUERY_KEY = 'health'
 
 const getHealth = async () => {
-  const { data } = await api.get<{ status: boolean }>('/api-status', {
+  const { data } = await api.get<GetApiStatusResponseType>('/api-status', {
     headers: {
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       Pragma: 'no-cache',

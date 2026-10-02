@@ -24,6 +24,7 @@
 # misc
 .DS_Store
 *.pem
+temp/
 
 # debug
 npm-debug.log*
@@ -49,3 +50,11 @@ next-env.d.ts
 .cursor/
 .specify/*
 specs/*
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

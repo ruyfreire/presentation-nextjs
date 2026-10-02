@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import { GetProfileResponseType } from '@/@types/profile'
 import { api } from '@/lib/axios'
@@ -11,8 +11,13 @@ export const getProfile = async () => {
   return data
 }
 
-const useGetProfile = () => {
+const useGetProfile = (
+  options?: Partial<
+    Omit<UseQueryOptions<GetProfileResponseType>, 'queryKey' | 'queryFn'>
+  >,
+) => {
   return useQuery({
+    ...options,
     queryKey: [PROFILE_QUERY_KEY],
     queryFn: getProfile,
   })

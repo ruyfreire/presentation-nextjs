@@ -81,15 +81,15 @@ export const aboutEvidence: { title: string; items: EvidenceItem[] } = {
       src: '/carousel/admin.png',
       caption:
         'O painel publica o currículo: mesma API, sessão e uma versão nova.',
-      width: 1132,
-      height: 995,
+      width: 1920,
+      height: 1080,
     },
     {
       title: 'GitHub Actions',
       src: '/carousel/github-actions.png',
       caption: 'CI no PR com check obrigatório para o merge.',
-      width: 1125,
-      height: 402,
+      width: 1920,
+      height: 1080,
     },
   ],
 }
