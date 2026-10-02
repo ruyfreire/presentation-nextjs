@@ -72,7 +72,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm run dev:test',
+    command: process.env.CI ? 'pnpm run start:test' : 'pnpm run dev:test',
     url: process.env.NEXT_PUBLIC_WEB_SERVER_URL || 'http://localhost:3050',
     reuseExistingServer: !process.env.CI,
   },
