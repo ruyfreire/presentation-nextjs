@@ -11,6 +11,7 @@ import { z } from 'zod'
 import { InputField } from '@/components/fields'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { FieldGroup } from '@/components/ui/field'
 import { usePostSignIn } from '@/services/post-signin'
 
 const signInSchema = z.object({
@@ -60,23 +61,25 @@ export default function SignInPage() {
       <Card className="w-full max-w-sm">
         <CardContent>
           <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
-            <InputField
-              label="E-mail"
-              {...form.register('email')}
-              errorMessage={form.formState.errors.email?.message}
-            />
+            <FieldGroup>
+              <InputField
+                label="E-mail"
+                {...form.register('email')}
+                errorMessage={form.formState.errors.email?.message}
+              />
 
-            <InputField
-              label="Senha"
-              {...form.register('password')}
-              errorMessage={form.formState.errors.password?.message}
-              type="password"
-            />
+              <InputField
+                label="Senha"
+                {...form.register('password')}
+                errorMessage={form.formState.errors.password?.message}
+                type="password"
+              />
 
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending && <Loader2 className="animate-spin" />}
-              Entrar
-            </Button>
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending && <Loader2 className="animate-spin" />}
+                Entrar
+              </Button>
+            </FieldGroup>
           </form>
         </CardContent>
       </Card>
