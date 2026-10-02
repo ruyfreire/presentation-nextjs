@@ -29,8 +29,8 @@ export const aboutDecisions = {
       title: 'Persistência, versionamento e cache',
       paragraphs: [
         'Como a estrutura do currículo ainda muda, preferi o modelo documental do MongoDB a definir cedo um schema relacional mais rígido.',
-        'Cada publicação cria um novo documento com uma versão incremental. A aplicação lê somente a versão vigente, enquanto as anteriores permanecem preservadas como trilha de auditoria e base para um possível rollback.',
-        'Para não consultar a API em toda visita, o Next.js mantém o perfil em cache. Depois de cada publicação, esse cache é invalidado e aquecido novamente com a versão vigente.',
+        'Cada publicação cria um novo documento. A aplicação retorna o documento mais recente, enquanto as anteriores permanecem preservadas como trilha de auditoria e base para um possível rollback.',
+        'Para não consultar a API em toda visita, o Next.js mantém o perfil em cache. Depois de cada publicação, esse cache é invalidado e aquecido novamente com o documento mais recente.',
       ],
     },
     {
@@ -48,12 +48,18 @@ export const aboutDecisions = {
       ],
     },
     {
-      title: 'Operação, observabilidade e qualidade',
+      title: 'Operação e observabilidade',
       paragraphs: [
         'Escolhi manter o frontend na Vercel, a API no Render e os dados no MongoDB Atlas, todos em planos gratuitos. Essa restrição traz um efeito concreto: o Render suspende a API após períodos sem tráfego.',
         'O cache absorve a maior parte das leituras. Se o perfil ainda não estiver em cache e o Render estiver iniciando, a interface explica a espera em vez de aparentar uma falha.',
         'New Relic monitora erros e transações no frontend e na API, enquanto o Contentsquare registra sinais de comportamento no site público.',
-        'Os repositórios executam lint, formatação e verificação de tipos no CI.',
+      ],
+    },
+    {
+      title: 'Testes como critério de entrega',
+      paragraphs: [
+        'Na API, separei testes unitários das regras de negócio, testes de integração dos contratos HTTP e um fluxo de ponta a ponta com a aplicação real e MongoDB em container. No frontend, o Playwright cobre jornadas públicas e administrativas em navegadores desktop e mobile.',
+        'Os workflows do GitHub Actions executam análise estática, testes e build em cada pull request. Esses checks são critérios de merge; o frontend também publica o relatório do Playwright no GitHub Pages para tornar o resultado inspecionável.',
       ],
     },
   ],
@@ -140,7 +146,13 @@ export const aboutStack = {
     },
     {
       label: 'Qualidade',
-      items: ['Jest', 'Husky', 'GitHub Actions'],
+      items: [
+        'Jest',
+        'Playwright',
+        'Testcontainers',
+        'Husky',
+        'GitHub Actions',
+      ],
     },
     {
       label: 'Operação',
