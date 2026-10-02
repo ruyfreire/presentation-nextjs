@@ -40,6 +40,7 @@ import { cn } from '@/lib/utils'
 import { useGetProfile } from '@/services/get-profile'
 import { usePostProfile } from '@/services/post-profile'
 
+import { BadgeUpdate } from '../badge-update'
 import { InputField, TextareaField } from '../fields'
 import {
   InputGroup,
@@ -423,7 +424,7 @@ export function ProfileForm() {
       className="flex flex-col gap-8"
     >
       <div className="flex justify-end">
-        <Badge variant="outline">{`Versão: ${profile?.version ?? '?'}`}</Badge>
+        <BadgeUpdate date={profile?.updatedAt} />
       </div>
 
       <FieldGroup>
