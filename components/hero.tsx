@@ -47,7 +47,7 @@ export function Hero({ profile }: HeroProps) {
     <section
       data-scrolling={animating.scrolling}
       className={cn(
-        'sticky top-0 left-0 z-10 w-full max-w-4xl border-b border-b-background bg-background px-4 py-2',
+        'sticky top-0 left-0 z-10 w-full max-w-5xl border-b border-b-background bg-background px-4 py-2',
         'transition-[max-width,border-color] duration-500 ease-linear',
         'data-[scrolling=true]:max-w-full data-[scrolling=true]:border-b-border',
       )}

@@ -4,6 +4,7 @@ import { isAxiosError } from 'axios'
 import { useEffect, useRef, useState } from 'react'
 
 import { GetProfileResponseType } from '@/@types/profile'
+import { BadgeUpdate } from '@/components/badge-update'
 import { Container } from '@/components/container'
 import { ExperienceTimeline } from '@/components/experience-timeline'
 import { Hero } from '@/components/hero'
@@ -11,7 +12,6 @@ import { LoadingDialog } from '@/components/loading-dialog'
 import { ProfileErrorMessage } from '@/components/profile-error-message'
 import { Section } from '@/components/section'
 import { SuspenseLoading } from '@/components/suspense-loading'
-import { Badge } from '@/components/ui/badge'
 import { useGetProfile } from '@/services/get-profile'
 import { formatDate } from '@/utils/formatters'
 
@@ -127,7 +127,7 @@ export function ProfileContent({
             </Section>
 
             <div className="flex justify-end border-t pt-2">
-              <Badge variant="outline">{`Versão: ${profile.version}`}</Badge>
+              <BadgeUpdate date={profile.updatedAt} />
             </div>
           </Container>
         </div>

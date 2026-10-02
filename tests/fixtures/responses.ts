@@ -11,7 +11,6 @@ export const getProfileResponse = (
     message: 'Profile fetched successfully',
     data: {
       id: 'k2j34bjk234kj23g4kj',
-      version: 1,
       profileId: 'default',
       imageUrl: 'https://placehold.co/192',
       name: 'Full name',
@@ -47,6 +46,8 @@ export const getProfileResponse = (
           tags: ['Tag 1', 'Tag 2'],
         },
       ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     },
     ...override,
   }
@@ -68,7 +69,6 @@ export const createProfileResponse = (
     message: 'Profile created successfully',
     data: {
       id: 'k2j34bjk234kj23g4kj',
-      version: 2,
       profileId: 'default',
       imageUrl: 'https://placehold.co/192',
       name: 'Full name',
@@ -104,6 +104,8 @@ export const createProfileResponse = (
           tags: ['Tag 1', 'Tag 2'],
         },
       ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     },
     ...override,
   }

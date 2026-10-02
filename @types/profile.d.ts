@@ -28,7 +28,6 @@ type EducationType = {
 
 type ProfileType = {
   id: string
-  version: number
   profileId: string
   imageUrl: string
   name: string
@@ -38,6 +37,8 @@ type ProfileType = {
   skills: string[] | null
   experiences: ExperienceType[]
   education: EducationType[]
+  createdAt: string
+  updatedAt: string
 }
 
 type GetProfileParamsType = {
@@ -49,7 +50,10 @@ type GetProfileResponseType = {
   data: ProfileType
 }
 
-type CreateProfileType = Omit<ProfileType, 'id' | 'version' | 'profileId'>
+type CreateProfileType = Omit<
+  ProfileType,
+  'id' | 'profileId' | 'createdAt' | 'updatedAt'
+>
 
 export type {
   ContactType,

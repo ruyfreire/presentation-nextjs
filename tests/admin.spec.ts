@@ -1,5 +1,7 @@
 import test, { expect } from '@playwright/test'
 
+import { formatDate } from '@/utils/formatters'
+
 import { getMeResponse, getProfileResponse } from './fixtures/responses'
 
 const profile = getProfileResponse()
@@ -29,7 +31,9 @@ test.beforeEach(async ({ page }) => {
 test('fill profile data on form', async ({ page }) => {
   await page.goto('/admin')
 
-  await expect(page.getByText(`Versão: ${profile.data.version}`)).toBeVisible()
+  await expect(
+    page.getByText(`Atualização: ${formatDate(profile.data.updatedAt)}`),
+  ).toBeVisible()
 
   await expect(page.getByRole('textbox', { name: 'Nome' })).toHaveValue(
     profile.data.name,
