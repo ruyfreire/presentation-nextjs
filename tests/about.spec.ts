@@ -47,11 +47,9 @@ test('about page navigate to home page', async ({ page }) => {
 
 test('carousel navigation buttons are visible and work', async ({
   page,
-  viewport,
+  isMobile,
 }) => {
   await page.goto('/about')
-
-  const mobile = viewport?.width ? viewport.width < 768 : false
 
   const previousButton = page.getByRole('button', { name: 'Imagem anterior' })
   const nextButton = page.getByRole('button', { name: 'Próxima imagem' })
@@ -64,9 +62,9 @@ test('carousel navigation buttons are visible and work', async ({
     includeHidden: true,
   })
 
-  const carouselItemTwo = aboutEvidence.items[mobile ? 1 : 2]
+  const carouselItemTwo = aboutEvidence.items[isMobile ? 1 : 2]
   const secondSlide = page.getByRole('group', {
-    name: `${mobile ? 2 : 3} de ${aboutEvidence.items.length}: ${carouselItemTwo.title}`,
+    name: `${isMobile ? 2 : 3} de ${aboutEvidence.items.length}: ${carouselItemTwo.title}`,
     includeHidden: true,
   })
 

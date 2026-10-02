@@ -48,44 +48,65 @@ import {
   InputGroupInput,
 } from '../ui/input-group'
 
-const required = z.string().min(1, 'Campo obrigatório')
+const requiredField = z.string().min(1, 'Campo obrigatório')
+const urlField = requiredField.pipe(z.httpUrl('URL inválida'))
+const dateField = z
+  .string()
+  .pipe(z.iso.date('Data inválida'))
+  .refine(
+    (value) => new Date(value) <= new Date(),
+    'Data maior que a data atual',
+  )
 
-const experienceSchema = z.object({
-  id: z.string(),
-  company: required,
-  role: required,
-  startDate: required,
-  endDate: z.string(),
-  description: z.string(),
-  tags: z.array(z.string()),
-})
+const experienceSchema = z
+  .object({
+    id: z.string(),
+    company: requiredField,
+    role: requiredField,
+    startDate: dateField,
+    endDate: dateField,
+    description: z.string(),
+    tags: z.array(z.string()),
+  })
+  .refine((data) => new Date(data.startDate) < new Date(data.endDate), {
+    error: 'Data fim deve ser maior que a data de início',
+    path: ['endDate'],
+  })
 
-const educationSchema = z.object({
-  id: z.string(),
-  title: required,
-  institution: required,
-  degree: z.string(),
-  startDate: required,
-  endDate: z.string(),
-  certificateUrl: z.string(),
-  description: z.string(),
-  tags: z.array(z.string()),
-})
+const educationSchema = z
+  .object({
+    id: z.string(),
+    title: requiredField,
+    institution: requiredField,
+    degree: z.string(),
+    startDate: dateField,
+    endDate: dateField,
+    certificateUrl: z.httpUrl('URL inválida').or(z.string().max(0)),
+    description: z.string(),
+    tags: z.array(z.string()),
+  })
+  .refine((data) => new Date(data.startDate) < new Date(data.endDate), {
+    error: 'Data fim deve ser maior que a data de início',
+    path: ['endDate'],
+  })
 
 const profileFormSchema = z.object({
-  profileId: required,
-  imageUrl: required,
-  name: required,
-  role: required,
+  imageUrl: urlField,
+  name: requiredField,
+  role: requiredField,
   bio: z.string(),
   contact: z.object({
-    location: required,
-    linkedin: required,
-    github: required,
+    location: requiredField,
+    linkedin: urlField,
+    github: urlField,
   }),
   skills: z.array(z.string()),
-  experiences: z.array(experienceSchema),
-  education: z.array(educationSchema),
+  experiences: z
+    .array(experienceSchema)
+    .min(1, 'Deve ter pelo menos uma experiência'),
+  education: z
+    .array(educationSchema)
+    .min(1, 'Deve ter pelo menos uma formação'),
 })
 
 type ProfileFormValues = z.infer<typeof profileFormSchema>
@@ -113,7 +134,6 @@ const emptyEducation = (): ProfileFormValues['education'][number] => ({
 })
 
 const emptyFormValues: ProfileFormValues = {
-  profileId: '',
   imageUrl: '',
   name: '',
   role: '',
@@ -124,8 +144,8 @@ const emptyFormValues: ProfileFormValues = {
     github: '',
   },
   skills: [],
-  experiences: [],
-  education: [],
+  experiences: [emptyExperience()],
+  education: [emptyEducation()],
 }
 
 const toDateInputValue = (value: string | null | undefined) => {
@@ -139,10 +159,10 @@ const toDateInputValue = (value: string | null | undefined) => {
   return value.slice(0, 10)
 }
 
-const emptyToNull = (value: string) => (value.trim() === '' ? null : value)
+const emptyToNull = (value: string | null) =>
+  value?.trim() === '' ? null : value
 
 const mapProfileToForm = (profile: ProfileType): ProfileFormValues => ({
-  profileId: profile.profileId,
   imageUrl: profile.imageUrl,
   name: profile.name,
   role: profile.role,
@@ -168,7 +188,6 @@ const mapProfileToForm = (profile: ProfileType): ProfileFormValues => ({
 })
 
 const mapFormToPayload = (values: ProfileFormValues): CreateProfileType => ({
-  profileId: values.profileId,
   imageUrl: values.imageUrl,
   name: values.name,
   role: values.role,
@@ -519,6 +538,7 @@ export function ProfileForm() {
                           ?.message
                       }
                       type="date"
+                      max={new Date().toISOString().split('T')[0]}
                     />
 
                     <InputField
@@ -529,6 +549,7 @@ export function ProfileForm() {
                           ?.message
                       }
                       type="date"
+                      max={new Date().toISOString().split('T')[0]}
                     />
                   </div>
 

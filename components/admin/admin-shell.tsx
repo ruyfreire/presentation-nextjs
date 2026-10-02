@@ -23,7 +23,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const handleLogout = async () => {
     try {
       await mutateAsync()
-      router.replace('/')
+      router.replace('/signin')
     } catch {
       toast.error('Erro ao sair')
     }
@@ -33,18 +33,24 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
     <TooltipProvider>
       <SidebarProvider>
         <AppSidebar onLogoutAction={handleLogout} isLoggingOut={isPending} />
+
         <SidebarInset>
           <header className="sticky top-0 z-10 bg-background flex h-16 shrink-0 items-center gap-2 border-b px-4">
             <SidebarTrigger className="-ml-1" />
+
             <Separator orientation="vertical" className="mr-2 h-full" />
+
             <h1 className="text-base font-semibold">Perfil</h1>
+
             <div className="ml-auto flex items-center gap-2">
               <ModeToggle />
+
               <Button
                 type="button"
                 variant="outline"
                 onClick={handleLogout}
                 disabled={isPending}
+                aria-busy={isPending}
               >
                 {isPending ? (
                   <Loader2 className="animate-spin" />
@@ -55,6 +61,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
               </Button>
             </div>
           </header>
+
           <div className="flex flex-1 flex-col p-4">{children}</div>
         </SidebarInset>
       </SidebarProvider>

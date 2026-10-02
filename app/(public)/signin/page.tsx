@@ -4,23 +4,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { isAxiosError } from 'axios'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { Controller, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { InputField } from '@/components/fields'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field'
-import { Input } from '@/components/ui/input'
 import { usePostSignIn } from '@/services/post-signin'
 
 const signInSchema = z.object({
-  email: z.email('E-mail inválido'),
+  email: z
+    .string()
+    .min(1, 'Campo obrigatório')
+    .pipe(z.email('E-mail inválido')),
   password: z
     .string()
     .min(1, 'Campo obrigatório')
@@ -63,54 +60,23 @@ export default function SignInPage() {
       <Card className="w-full max-w-sm">
         <CardContent>
           <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
-            <FieldGroup>
-              <Controller
-                name="email"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>E-mail</FieldLabel>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      type="email"
-                      autoComplete="email"
-                      placeholder="seu@email.com"
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+            <InputField
+              label="E-mail"
+              {...form.register('email')}
+              errorMessage={form.formState.errors.email?.message}
+            />
 
-              <Controller
-                name="password"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Senha</FieldLabel>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      type="password"
-                      autoComplete="current-password"
-                      placeholder="••••••••"
-                      aria-invalid={fieldState.invalid}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+            <InputField
+              label="Senha"
+              {...form.register('password')}
+              errorMessage={form.formState.errors.password?.message}
+              type="password"
+            />
 
-              <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending && <Loader2 className="animate-spin" />}
-                Entrar
-              </Button>
-            </FieldGroup>
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending && <Loader2 className="animate-spin" />}
+              Entrar
+            </Button>
           </form>
         </CardContent>
       </Card>

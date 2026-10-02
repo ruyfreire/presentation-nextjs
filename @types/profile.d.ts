@@ -49,7 +49,7 @@ type GetProfileResponseType = {
   data: ProfileType
 }
 
-type CreateProfileType = Omit<ProfileType, 'id' | 'version'>
+type CreateProfileType = Omit<ProfileType, 'id' | 'version' | 'profileId'>
 
 export type {
   ContactType,
