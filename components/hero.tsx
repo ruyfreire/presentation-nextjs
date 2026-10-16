@@ -44,7 +44,7 @@ export function Hero({ profile }: HeroProps) {
   })
 
   return (
-    <section
+    <header
       data-scrolling={animating.scrolling}
       className={cn(
         'sticky top-0 left-0 z-10 w-full max-w-5xl border-b border-b-background bg-background px-4 py-2',
@@ -167,6 +167,6 @@ export function Hero({ profile }: HeroProps) {
           </Link>
         </Button>
       </motion.div>
-    </section>
+    </header>
   )
 }
