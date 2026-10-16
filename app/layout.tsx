@@ -28,6 +28,9 @@ export const metadata: Metadata = {
     'Apresentação do perfil profissional de Ruy Freire, engenheiro de software.',
   verification: {
     google: 'NHJVfV3TYjUX3YCt4jlOkZ6g53IVtxbHC2CML57Zm5Y',
+    other: {
+      'msvalidate.01': '0E882E9594C06375CF7EF3D634EF4560',
+    },
   },
 }
 
